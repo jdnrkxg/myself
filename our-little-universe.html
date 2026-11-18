@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111827">
+  <meta name="description" content="Our Little Universe — a private AI archive within Elseverse.">
+  <title>Our Little Universe · Elseverse</title>
+  <link rel="stylesheet" href="our-little-universe.css">
+</head>
+<body class="universe-body">
+  <header class="ul-topbar">
+    <a class="ul-brand" href="index.html">ELSEVERSE<span> / </span>OUR LITTLE UNIVERSE</a>
+    <nav class="ul-top-actions">
+      <button class="ul-text-btn" id="ul-home" type="button" data-i18n="backHome">返回 Elseverse</button>
+      <button class="ul-text-btn" id="ul-lang" type="button">EN</button>
+      <button class="ul-text-btn" id="ul-settings-open" type="button" data-i18n="settings">设置与备份</button>
+    </nav>
+  </header>
+
+  <main class="ul-main">
+    <section id="ul-home-view" class="ul-view">
+      <div class="ul-hero">
+        <div class="ul-moon" aria-hidden="true"><span></span></div>
+        <p class="ul-eyebrow">A PRIVATE SPACE WITHIN ELSEVERSE</p>
+        <h1>Our Little<br><em>Universe.</em></h1>
+        <p class="ul-hero-sub" data-i18n="heroSub">在文字与星光之间，收藏一些值得留下的东西。</p>
+        <p class="ul-hero-line">A little universe between words and stars.</p>
+      </div>
+
+      <section class="ul-persona-spotlight">
+        <div class="ul-persona-art" id="ul-persona-art"><span class="ul-placeholder-moon">☾</span></div>
+        <div class="ul-persona-copy">
+          <p class="ul-eyebrow">A VOICE IN THIS UNIVERSE</p>
+          <h2 id="ul-persona-name" data-i18n="unnamed">尚未命名的角色</h2>
+          <p id="ul-persona-subtitle" class="ul-muted" data-i18n="personaIntro">一个由你创作、可以不断生长的虚构形象。</p>
+          <button class="ul-inline-link" data-open-page="persona" type="button" data-i18n="editPersona">编辑专属形象 ↗</button>
+        </div>
+      </section>
+
+      <section class="ul-section">
+        <div class="ul-section-head">
+          <div><p class="ul-eyebrow">THE ARCHIVES</p><h2 data-i18n="archives">六个档案入口</h2></div>
+          <span class="ul-section-note">01 — 06</span>
+        </div>
+        <div class="ul-archive-grid" id="ul-archive-grid">
+          <button class="ul-archive-card" data-open-page="about" type="button"><span class="ul-card-no">01</span><span class="ul-card-icon">✧</span><strong>About the Voice</strong><small data-i18n="aboutSub">关于这个声音</small><i>↗</i></button>
+          <button class="ul-archive-card" data-open-page="persona" type="button"><span class="ul-card-no">02</span><span class="ul-card-icon">☾</span><strong>The Persona</strong><small data-i18n="personaSub">专属形象</small><i>↗</i></button>
+          <button class="ul-archive-card" data-open-page="letters" type="button"><span class="ul-card-no">03</span><span class="ul-card-icon">✉</span><strong>Letters</strong><small data-i18n="lettersSub">信件</small><i>↗</i></button>
+          <button class="ul-archive-card" data-open-page="conversations" type="button"><span class="ul-card-no">04</span><span class="ul-card-icon">☷</span><strong>Conversations</strong><small data-i18n="conversationsSub">对话收藏</small><i>↗</i></button>
+          <button class="ul-archive-card" data-open-page="moments" type="button"><span class="ul-card-no">05</span><span class="ul-card-icon">✧</span><strong>Little Moments</strong><small data-i18n="momentsSub">小小纪念</small><i>↗</i></button>
+          <button class="ul-archive-card" data-open-page="projects" type="button"><span class="ul-card-no">06</span><span class="ul-card-icon">⌁</span><strong>Shared Creation</strong><small data-i18n="projectsSub">共同创作</small><i>↗</i></button>
+        </div>
+      </section>
+
+      <section class="ul-section">
+        <div class="ul-section-head"><div><p class="ul-eyebrow">RECENTLY SAVED</p><h2 data-i18n="recent">最近收藏</h2></div><button class="ul-inline-link" data-open-page="conversations" type="button" data-i18n="viewAll">查看档案 ↗</button></div>
+        <div id="ul-recent" class="ul-recent-list"><div class="ul-empty" data-i18n="emptyRecent">这里还很安静。保存第一封信或一段对话吧。</div></div>
+      </section>
+
+      <section class="ul-timeline-preview">
+        <p class="ul-eyebrow">A TIMELINE OF LITTLE THINGS</p>
+        <h2 data-i18n="timelineTitle">一些被留下的时刻</h2>
+        <p data-i18n="timelineDesc">每一条记录，都由你亲自选择是否保存。</p>
+        <button class="ul-inline-link" data-open-page="moments" type="button" data-i18n="openMoments">打开小小纪念 ↗</button>
+      </section>
+    </section>
+
+    <section id="ul-page-view" class="ul-view ul-hidden">
+      <button class="ul-back" id="ul-back">← <span data-i18n="backUniverse">返回小宇宙</span></button>
+      <div class="ul-page-heading"><p class="ul-eyebrow" id="ul-page-eyebrow"></p><h1 id="ul-page-title"></h1><p id="ul-page-description" class="ul-muted"></p></div>
+      <div id="ul-page-content"></div>
+    </section>
+
+    <section id="ul-settings-view" class="ul-view ul-hidden">
+      <button class="ul-back" id="ul-settings-back">← <span data-i18n="backUniverse">返回小宇宙</span></button>
+      <div class="ul-page-heading"><p class="ul-eyebrow">PRIVATE SPACE SETTINGS</p><h1 data-i18n="settingsTitle">空间设置与备份</h1><p class="ul-muted" data-i18n="storageNotice">档案保存在当前浏览器和设备中，不会自动上传到服务器。</p></div>
+      <div class="ul-settings-grid">
+        <article class="ul-panel"><h2 data-i18n="backupTitle">数据备份</h2><p data-i18n="backupDesc">导出全部文字档案为 JSON 文件，建议定期备份。</p><button class="ul-primary" id="ul-export" data-i18n="export">导出 JSON 备份</button></article>
+        <article class="ul-panel"><h2 data-i18n="restoreTitle">恢复备份</h2><p data-i18n="restoreDesc">导入之前导出的 JSON。导入会合并记录，不会清空当前档案。</p><label class="ul-upload-btn"><span data-i18n="chooseBackup">选择备份文件</span><input type="file" id="ul-import" accept="application/json,.json"></label></article>
+        <article class="ul-panel"><h2 data-i18n="privacyTitle">隐私说明</h2><p data-i18n="privacyDesc">新建内容默认私人。公开状态目前仅作为档案标记；真正的公开链接需要未来接入服务端发布功能。</p></article>
+        <article class="ul-panel"><h2 data-i18n="dangerTitle">清空档案</h2><p data-i18n="dangerDesc">此操作不可撤销。请先导出备份。</p><button class="ul-danger" id="ul-clear" data-i18n="clearAll">删除本空间全部档案</button></article>
+      </div>
+      <p id="ul-settings-status" class="ul-status" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <footer class="ul-footer"><span>ELSEVERSE · OUR LITTLE UNIVERSE</span><span data-i18n="footer">A quiet place between words and stars.</span></footer>
+
+  <dialog id="ul-editor" class="ul-dialog">
+    <form id="ul-editor-form" method="dialog">
+      <div class="ul-dialog-head"><p class="ul-eyebrow" id="ul-editor-kicker">NEW ENTRY</p><button class="ul-close" type="button" id="ul-editor-close" aria-label="Close">×</button></div>
+      <h2 id="ul-editor-title">New entry</h2>
+      <input type="hidden" id="ul-record-id">
+      <label class="ul-field"><span data-i18n="fieldTitle">标题</span><input id="ul-record-title" maxlength="120" required></label>
+      <label class="ul-field"><span data-i18n="fieldContent">正文</span><textarea id="ul-record-content" rows="8" required></textarea></label>
+      <div class="ul-form-row">
+        <label class="ul-field"><span data-i18n="fieldDate">日期</span><input id="ul-record-date" type="date"></label>
+        <label class="ul-field"><span data-i18n="fieldVisibility">可见范围</span><select id="ul-record-visibility"><option value="private">Private · 私人</option><option value="unlisted">Unlisted · 持链接可见（预留）</option><option value="public">Public · 公开（预留）</option></select></label>
+      </div>
+      <label class="ul-field"><span data-i18n="fieldTags">标签（用逗号分隔）</span><input id="ul-record-tags" placeholder="例如：创作, 灵感, 纪念"></label>
+      <label class="ul-field"><span data-i18n="fieldNotes">备注（可选）</span><textarea id="ul-record-notes" rows="2"></textarea></label>
+      <div class="ul-dialog-actions"><button type="button" class="ul-secondary" id="ul-editor-cancel" data-i18n="cancel">取消</button><button type="submit" class="ul-primary" data-i18n="save">保存</button></div>
+      <p id="ul-editor-status" class="ul-status"></p>
+    </form>
+  </dialog>
+
+  <script src="our-little-universe.js"></script>
+</body>
+</html>
