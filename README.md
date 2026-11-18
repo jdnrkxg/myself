@@ -1,30 +1,28 @@
-# MySelf — v0.4
+# Elseverse · 别境 — v0.5
 
-A mobile-first bilingual (Chinese / English) personal worlds archive prototype.
+A mobile-first bilingual-ready, local-first personal worlds archive prototype.
 
-## What's new in v0.4
-- Redesigned the homepage with an editorial / personal-archive visual direction.
-- Added a hero area, Dream Worlds and Original Worlds collection covers, a recently collected section, and a personal note.
-- Added image customization for the homepage hero, both collection covers, and each individual world.
-- Added image preview, replacement, and reset-to-default behavior.
-- Images are resized to a maximum 1800px edge and stored as WebP in IndexedDB to reduce storage use.
-- Preserved the existing `myself-worlds` localStorage data format and bilingual language preference.
-- Kept world add/edit/delete and module selection behavior.
-- Responsive layouts for mobile and desktop, including Android image-picker support through `accept="image/*"`.
+## Included
+- Elseverse home with Dream Worlds and Original Worlds collections.
+- Preserves legacy `myself-worlds` and `myself-language` localStorage keys.
+- World create/edit/delete and category browsing.
+- Our Little Universe with six subpages: About the Voices, The Persona, Letters, Conversations, Little Moments, Shared Creation.
+- Records support title, body, relation (you / G老师 / D老师 / shared), tags, date, and visibility label.
+- IndexedDB storage under a separate database `elseverse-archive-v1`; legacy media database is not modified.
+- JSON backup and merge import.
+- Responsive mobile layout.
 
 ## Run
-1. Extract the ZIP.
-2. Open `index.html` in a modern browser, or deploy the folder to a static hosting service.
-3. Open **Manage / 管理** to edit worlds and customize images.
+Open `index.html` in a modern browser or deploy the folder to static hosting.
 
-## Storage and privacy notes
-- World metadata remains in localStorage under `myself-worlds`.
-- Custom images are stored separately in IndexedDB in the current browser on the current device.
-- Images do not sync between devices and are not uploaded to a server. Clearing site/browser data may erase them.
-- Export/backup important world data before replacing an existing deployment.
-- Browser storage quotas vary. If an image cannot be saved, try a smaller image.
-- The prototype still has no login, cloud sync, access control, or full content editors for modules. Do not store sensitive/private diary or letter content here.
+## Data and privacy notes
+- All content is stored locally in the current browser/device. There is no account, server, cloud sync, or cross-device sync.
+- `public` is only a visibility label in this prototype; it does not publish anything to the internet.
+- Do not treat local browser storage as strong security for sensitive content.
+- Back up important data before replacing the deployed site. The app retains the original `myself-worlds` and `myself-language` keys and does not delete the old `myself-media-v1` image database.
+- Legacy world cover image upload controls from the previous version are not included in this prototype UI; the existing media database is left untouched. A later pass can reconnect cover-image management.
 
-## Validation
-- JavaScript syntax checked with `node --check`.
-- This package has not been fully tested in a real Android browser. Please test image picking, replacement, reset, and world management on the deployed site before relying on it.
+## Known limitations
+- English toggle currently updates language preference and button label; full translation coverage is a follow-up task.
+- The world module cards remain previews, not full editors.
+- Timeline is a chronological view of archive records; there is no backend sharing.
