@@ -13,7 +13,19 @@ const pages=[
 let language=localStorage.getItem(LEGACY_LANG)==='en'?'en':'zh',worlds=[],currentCategory='dream',currentPage=null,records=[],editingRecord=null,editingWorld=null,db;
 function safeParse(s,fallback){try{return JSON.parse(s)||fallback}catch{return fallback}}
 function loadWorlds(){const raw=localStorage.getItem(LEGACY_WORLDS);if(raw===null)return [{id:'dream',zh:'梦女世界',en:'Dream Worlds',description:'不同 IF 线的集合。每条故事线都可以拥有独立的风格与模块。',category:'dream',modules:['characters','gallery','timeline','diary','letters']},{id:'original',zh:'原创世界',en:'Original Worlds',description:'原创角色、科幻设定，以及仍在不断扩展的宇宙。',category:'original',modules:['characters','relationships','map','timeline','custom']}];const parsed=safeParse(raw,null);if(!Array.isArray(parsed))return [];return parsed.filter(x=>x&&typeof x.id==='string'&&typeof x.zh==='string').map(x=>({...x,modules:Array.isArray(x.modules)?x.modules:[]}));}
-function show(id){document.querySelectorAll('.view').forEach(v=>v.classList.add('hidden'));$(id).classList.remove('hidden');window.scrollTo({top:0,behavior:'auto'});}
+function show(id){
+  // Keep the global sky theme in sync with the active view. This is the single
+  // cleanup point for every navigation path (back button, logo, and view links).
+  const isUniverseArea = id==='universeView' || id==='archivePageView';
+  if(isUniverseArea){document.body.classList.add('sky-active');}
+  else if(typeof stopLiveSky==='function'){stopLiveSky();}
+  else{document.body.classList.remove('sky-active');}
+  document.querySelectorAll('.view').forEach(v=>v.classList.add('hidden'));
+  const target=$(id);
+  if(!target)return;
+  target.classList.remove('hidden');
+  window.scrollTo({top:0,behavior:'auto'});
+}
 function id(){return 'r-'+(crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2));}
 function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function openDB(){if(db)return Promise.resolve(db);return new Promise((resolve,reject)=>{const req=indexedDB.open(ARCHIVE_DB,1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains(ARCHIVE_STORE))req.result.createObjectStore(ARCHIVE_STORE,{keyPath:'id'});};req.onsuccess=()=>{db=req.result;resolve(db)};req.onerror=()=>reject(req.error)});}
@@ -40,19 +52,58 @@ $('importFile').addEventListener('change',async e=>{const file=e.target.files?.[
 // Live sky: real star catalogue + horizon projection for the selected observer.
 const SHARED_SKY_KEY='elseverse-shared-sky-v1';
 let skyEngine=null,skyMode='local',localSkyLocation=null,sharedSkyLocation=safeParse(localStorage.getItem(SHARED_SKY_KEY)||'null',null),skyClockTimer=null,skyStarted=false;
+let skyFxFrame=0,skyFxRunning=false,skyFxStars=[],skyFxMeteor=null,skyFxLastMeteor=0,skyFxEnabled=true;
+const SKY_FX_PREF='elseverse-sky-effects-v1';
 function skyMessage(text,hide=false){const el=$('skyMessage');if(!el)return;el.textContent=text;el.classList.toggle('hidden',hide);}
 function updateSkyClock(){const now=new Date();$('skyClock').textContent=new Intl.DateTimeFormat(language==='zh'?'zh-CN':'en-GB',{dateStyle:'medium',timeStyle:'medium'}).format(now);if(skyEngine&&skyStarted){try{skyEngine.setDate(now)}catch(e){}}}
 function setSkyMode(mode){skyMode=mode;document.querySelectorAll('[data-sky-mode]').forEach(b=>b.classList.toggle('active',b.dataset.skyMode===mode));$('skyModeLabel').textContent=mode==='local'?'此时此地 · REAL SKY':'我们的星空 · SHARED SKY';$('skyLocationBtn').classList.toggle('hidden',mode!=='local');$('skyLocalManualBtn').classList.toggle('hidden',mode!=='local');$('skySharedSetupBtn').classList.toggle('hidden',mode!=='shared');$('localSkyForm').classList.add('hidden');$('sharedSkyForm').classList.toggle('hidden',mode!=='shared'||!!sharedSkyLocation);if(mode==='local'){if(localSkyLocation)applySkyLocation(localSkyLocation.lat,localSkyLocation.lon,'此时此地');else{$('skyLocationLabel').textContent='尚未授权定位 · 点击「启用当前位置」';skyMessage('请允许位置权限，或在浏览器设置中启用定位。');}}else if(sharedSkyLocation){applySkyLocation(sharedSkyLocation.lat,sharedSkyLocation.lon,sharedSkyLocation.label||'我们的共同观测点');}else{$('skyLocationLabel').textContent='还没有设定共同观测地点';$('sharedSkyForm').classList.remove('hidden');skyMessage('为我们的星空选择一处固定地点。');}}
-function initLiveSky(){document.body.classList.add('sky-active');if(skyStarted)return;if(skyEngine){try{skyEngine.start();skyStarted=true;updateSkyClock();setSkyMode(skyMode);return;}catch(e){console.warn('Could not resume sky engine; rebuilding.',e);}}const canvas=$('liveSkyCanvas');if(!canvas)return;if(typeof SkyEngine==='undefined'||typeof SKY==='undefined'){skyMessage('星表加载失败。请检查网络连接后刷新页面。');return;}try{skyEngine=new SkyEngine(canvas,SKY,{conNameKey:'e',planets:true});skyEngine.set('constellations',true);skyEngine.set('labels',false);skyEngine.set('dsos',true);skyEngine.set('milkyway',true);skyEngine.set('meteors',false);skyEngine.set('planets',true);skyEngine.start();skyStarted=true;skyMessage('',true);updateSkyClock();if(!skyClockTimer)skyClockTimer=setInterval(updateSkyClock,30000);setSkyMode(skyMode);}catch(err){console.error('Live sky initialization failed',err);skyMessage('星空暂时无法启动。请刷新页面，或稍后再试。');}}
+function initLiveSky(){document.body.classList.add('sky-active');startSkyEffects();if(skyStarted)return;if(skyEngine){try{skyEngine.start();skyStarted=true;updateSkyClock();setSkyMode(skyMode);return;}catch(e){console.warn('Could not resume sky engine; rebuilding.',e);}}const canvas=$('liveSkyCanvas');if(!canvas)return;if(typeof SkyEngine==='undefined'||typeof SKY==='undefined'){skyMessage('星表加载失败。请检查网络连接后刷新页面。');return;}try{skyEngine=new SkyEngine(canvas,SKY,{conNameKey:'e',planets:true});skyEngine.set('constellations',true);skyEngine.set('labels',false);skyEngine.set('dsos',true);skyEngine.set('milkyway',true);skyEngine.set('meteors',false);skyEngine.set('planets',true);skyEngine.start();skyStarted=true;skyMessage('',true);updateSkyClock();if(!skyClockTimer)skyClockTimer=setInterval(updateSkyClock,30000);setSkyMode(skyMode);}catch(err){console.error('Live sky initialization failed',err);skyMessage('星空暂时无法启动。请刷新页面，或稍后再试。');}}
 function applySkyLocation(lat,lon,label){if(!skyEngine)return;try{skyEngine.setHorizon(Number(lat),Number(lon),new Date());skyEngine.setDate(new Date());$('skyLocationLabel').textContent=label+' · '+Number(lat).toFixed(2)+'°, '+Number(lon).toFixed(2)+'°';skyMessage('',true);}catch(err){console.error(err);skyMessage('无法计算该地点的天空，请检查经纬度。');}}
 function requestSkyLocation(onSuccess){if(!navigator.geolocation){skyMessage('当前浏览器不支持定位，请手动填写经纬度。');return;}skyMessage('正在请求设备位置…');navigator.geolocation.getCurrentPosition(pos=>{const loc={lat:pos.coords.latitude,lon:pos.coords.longitude};localSkyLocation=loc;onSuccess(loc);},err=>{const reason=err.code===1?'你尚未允许位置权限。':err.code===2?'暂时无法获取位置。':'定位超时。';skyMessage(reason+'你也可以在共同星空中手动设置经纬度。');},{enableHighAccuracy:false,timeout:12000,maximumAge:300000});}
 function saveSharedSky(lat,lon,label='我们的共同观测点'){lat=Number(lat);lon=Number(lon);if(!Number.isFinite(lat)||lat < -90||lat > 90||!Number.isFinite(lon)||lon < -180||lon > 180){skyMessage('经纬度格式不正确：纬度 -90 至 90，经度 -180 至 180。');return;}sharedSkyLocation={lat,lon,label};localStorage.setItem(SHARED_SKY_KEY,JSON.stringify(sharedSkyLocation));$('sharedSkyLat').value=lat;$('sharedSkyLon').value=lon;$('sharedSkyForm').classList.add('hidden');applySkyLocation(lat,lon,label);}
-function stopLiveSky(){document.body.classList.remove('sky-active');if(skyEngine&&skyStarted){try{skyEngine.stop()}catch(e){}skyStarted=false;}}
+function stopLiveSky(){document.body.classList.remove('sky-active','sky-immersive');document.getElementById('immersiveToggle')?.setAttribute('aria-pressed','false');document.getElementById('immersiveToggle')?.classList.remove('is-exit');stopSkyEffects();if(skyEngine&&skyStarted){try{skyEngine.stop()}catch(e){}skyStarted=false;}}
+
+// Independent decorative layer: gentle twinkle + occasional meteors.
+// The astronomical canvas remains the source of real star/planet positions;
+// this layer only adds subtle atmosphere and never changes celestial coordinates.
+function resizeSkyEffects(){
+ const c=$('skyEffectsCanvas');if(!c)return;
+ const dpr=Math.min(window.devicePixelRatio||1,1.5),w=window.innerWidth,h=window.innerHeight;
+ c.width=Math.round(w*dpr);c.height=Math.round(h*dpr);c.style.width=w+'px';c.style.height=h+'px';
+ const ctx=c.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);
+ const count=Math.max(55,Math.min(150,Math.round(w*h/10500)));
+ skyFxStars=Array.from({length:count},()=>({x:Math.random()*w,y:Math.random()*h,r:.35+Math.random()*1.05,a:.18+Math.random()*.58,phase:Math.random()*Math.PI*2,speed:.35+Math.random()*.8}));
+}
+function drawSkyEffects(now){
+ const c=$('skyEffectsCanvas');if(!c||!skyFxRunning)return;
+ const ctx=c.getContext('2d'),w=window.innerWidth,h=window.innerHeight;
+ ctx.clearRect(0,0,w,h);
+ if(skyFxEnabled){
+  for(const s of skyFxStars){const alpha=s.a*(.66+.34*Math.sin(now*.00065*s.speed+s.phase));ctx.beginPath();ctx.fillStyle=`rgba(222,232,255,${alpha})`;ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();}
+  if(!skyFxMeteor&&now-skyFxLastMeteor>(18000+Math.random()*22000)){skyFxMeteor={x:w*(.55+Math.random()*.42),y:h*(.05+Math.random()*.42),vx:-(4+Math.random()*3),vy:2+Math.random()*2.2,life:0,max:42+Math.random()*20};skyFxLastMeteor=now;}
+  if(skyFxMeteor){const m=skyFxMeteor;m.x+=m.vx;m.y+=m.vy;m.life++;const fade=Math.min(1,m.life/7,(m.max-m.life)/12);const len=95;const g=ctx.createLinearGradient(m.x,m.y,m.x-m.vx*len/6,m.y-m.vy*len/6);g.addColorStop(0,`rgba(235,242,255,${Math.max(0,fade*.9)})`);g.addColorStop(1,'rgba(190,210,255,0)');ctx.strokeStyle=g;ctx.lineWidth=1.6;ctx.beginPath();ctx.moveTo(m.x,m.y);ctx.lineTo(m.x-m.vx*len/6,m.y-m.vy*len/6);ctx.stroke();if(m.life>m.max||m.x< -150||m.y>h+100)skyFxMeteor=null;}
+ }
+ skyFxFrame=requestAnimationFrame(drawSkyEffects);
+}
+function startSkyEffects(){
+ if(skyFxRunning)return;skyFxEnabled=localStorage.getItem(SKY_FX_PREF)!=='off';
+ resizeSkyEffects();skyFxRunning=true;
+ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)skyFxFrame=requestAnimationFrame(drawSkyEffects);
+ else{const c=$('skyEffectsCanvas');if(c)c.style.opacity='.55';}
+}
+function stopSkyEffects(){skyFxRunning=false;if(skyFxFrame)cancelAnimationFrame(skyFxFrame);skyFxFrame=0;const c=$('skyEffectsCanvas');if(c){const ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);}}
+window.addEventListener('resize',()=>{if(skyFxRunning)resizeSkyEffects();},{passive:true});
+window.addEventListener('orientationchange',()=>{if(skyFxRunning)setTimeout(resizeSkyEffects,180);},{passive:true});
+$('immersiveToggle')?.addEventListener('click',()=>{const on=!document.body.classList.contains('sky-immersive');document.body.classList.toggle('sky-immersive',on);$('immersiveToggle').setAttribute('aria-pressed',String(on));$('immersiveToggle').classList.toggle('is-exit',on);$('immersiveToggle').textContent=on?'退出沉浸模式 ×':'进入沉浸模式 ⛶';});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('sky-immersive')){$('immersiveToggle')?.click();}});
+$('skyMotion')?.addEventListener('click',e=>{skyFxEnabled=!skyFxEnabled;localStorage.setItem(SKY_FX_PREF,skyFxEnabled?'on':'off');e.currentTarget.setAttribute('aria-pressed',String(skyFxEnabled));e.currentTarget.textContent=skyFxEnabled?'星空动效':'开启星空动效';if(skyFxEnabled&&!skyFxRunning)startSkyEffects();});
+
 $('skyLocationBtn')?.addEventListener('click',()=>requestSkyLocation(loc=>{if(skyMode==='local')applySkyLocation(loc.lat,loc.lon,'此时此地');}));
 $('skySharedSetupBtn')?.addEventListener('click',()=>{if(sharedSkyLocation){$('sharedSkyLat').value=sharedSkyLocation.lat;$('sharedSkyLon').value=sharedSkyLocation.lon;}$('sharedSkyForm').classList.toggle('hidden')});
 $('skyLocalManualBtn')?.addEventListener('click',()=>$('localSkyForm').classList.toggle('hidden'));
 $('saveLocalSky')?.addEventListener('click',()=>{const lat=Number($('localSkyLat').value),lon=Number($('localSkyLon').value);if(!Number.isFinite(lat)||lat < -90||lat > 90||!Number.isFinite(lon)||lon < -180||lon > 180){skyMessage('经纬度格式不正确：纬度 -90 至 90，经度 -180 至 180。');return;}localSkyLocation={lat,lon};$('localSkyForm').classList.add('hidden');applySkyLocation(lat,lon,'手动选择的地点');});
 document.querySelectorAll('[data-sky-mode]').forEach(b=>b.addEventListener('click',()=>setSkyMode(b.dataset.skyMode)));
+if($('skyMotion')){$('skyMotion').setAttribute('aria-pressed',String(localStorage.getItem(SKY_FX_PREF)!=='off'));$('skyMotion').textContent=localStorage.getItem(SKY_FX_PREF)==='off'?'开启星空动效':'星空动效';}
 $('saveSharedSky')?.addEventListener('click',()=>saveSharedSky($('sharedSkyLat').value,$('sharedSkyLon').value));
 $('useCurrentForShared')?.addEventListener('click',()=>requestSkyLocation(loc=>saveSharedSky(loc.lat,loc.lon,'我们共同选择的地点')));
 $('skyConstellations')?.addEventListener('click',e=>{const on=e.currentTarget.getAttribute('aria-pressed')!=='true';e.currentTarget.setAttribute('aria-pressed',String(on));skyEngine?.set('constellations',on)});

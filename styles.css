@@ -13,6 +13,11 @@
 
 /* The live sky is a shared backdrop across the Our Little Universe home and subpages. */
 .sky-backdrop{display:none}
+/* Defensive reset: never let planetarium-only positioning/theme leak into the light site. */
+body:not(.sky-active){background:var(--paper);color:var(--ink)}
+body:not(.sky-active) .sky-backdrop{display:none!important;position:absolute!important;inset:auto!important;width:0!important;height:0!important}
+body:not(.sky-active) .topbar{position:static;background:transparent;border-color:var(--line);backdrop-filter:none}
+body:not(.sky-active) .topbar .brand,body:not(.sky-active) .topbar .text-btn{color:var(--ink)}
 body.sky-active{background:#080d18;color:#f4f1ea}
 body.sky-active .sky-backdrop{display:block;position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none;background:#080d18}
 body.sky-active .topbar,body.sky-active .main,body.sky-active .footer{position:relative;z-index:1}
@@ -23,3 +28,35 @@ body.sky-active .footer{border-color:#ffffff20;color:#9ca9bc}
 .sky-observatory{background:#0b14256b;border-color:#ffffff1c;backdrop-filter:blur(2px)}
 .sky-stage{background:linear-gradient(180deg,#0a132280,#0a132200 55%,#0a132280);}
 .sky-stage-shade{background:linear-gradient(180deg,#05091222 0%,transparent 24%,transparent 65%,#05091255 100%)}
+
+/* v0.5.2 — fixed planetarium background, atmospheric motion and immersive viewing */
+body.sky-active #liveSkyCanvas.sky-backdrop{
+  display:block!important;position:fixed!important;left:0!important;top:0!important;right:auto!important;bottom:auto!important;
+  width:100vw!important;height:100vh!important;height:100dvh!important;max-width:none!important;max-height:none!important;
+  z-index:0!important;pointer-events:none!important;object-fit:fill;background:#080d18;
+}
+.sky-effects-backdrop{display:none;}
+body.sky-active #skyEffectsCanvas.sky-effects-backdrop{
+  display:block;position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;z-index:1;pointer-events:none;opacity:.9;
+}
+body.sky-active .topbar,body.sky-active .main,body.sky-active .footer{position:relative;z-index:2;}
+body.sky-active .universe-view{background:transparent!important;}
+body.sky-active .sky-observatory{background:transparent;border-color:#ffffff18;backdrop-filter:none;box-shadow:none;}
+body.sky-active .sky-stage{background:transparent!important;}
+body.sky-active .sky-stage-shade{background:linear-gradient(180deg,#05091230 0%,transparent 28%,transparent 70%,#05091238 100%);}
+.immersive-toggle{display:none;position:fixed;right:max(18px,env(safe-area-inset-right));top:max(16px,env(safe-area-inset-top));z-index:10000;border:1px solid #ffffff45;background:#0b1425c9;color:#f4f1ea;padding:10px 14px;font-size:11px;letter-spacing:.04em;backdrop-filter:blur(12px);border-radius:2px;}
+body.sky-active .immersive-toggle{display:block;}
+.immersive-toggle:hover{background:#24334c;color:#fff;}
+body.sky-immersive{overflow:hidden!important;background:#050912!important;}
+body.sky-immersive .topbar,body.sky-immersive .main,body.sky-immersive .footer{visibility:hidden!important;pointer-events:none!important;}
+body.sky-immersive .immersive-toggle{visibility:visible!important;pointer-events:auto!important;opacity:.72;}
+body.sky-immersive .immersive-toggle:hover,body.sky-immersive .immersive-toggle:focus-visible{opacity:1;}
+body.sky-immersive #liveSkyCanvas.sky-backdrop,body.sky-immersive #skyEffectsCanvas.sky-effects-backdrop{z-index:0!important;}
+@media(max-width:600px){
+ body.sky-active #liveSkyCanvas.sky-backdrop,body.sky-active #skyEffectsCanvas.sky-effects-backdrop{height:100dvh;}
+ .immersive-toggle{top:max(12px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right));padding:9px 12px;}
+}
+@media(prefers-reduced-motion:reduce){
+ body.sky-active #skyEffectsCanvas.sky-effects-backdrop{opacity:.35;}
+ .immersive-toggle{transition:none;}
+}

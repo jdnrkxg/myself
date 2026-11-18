@@ -32,3 +32,12 @@ Open `index.html` in a modern browser or deploy the folder to static hosting.
 - Timeline is a chronological view of archive records; there is no backend sharing.
 - SkyEngine and its star catalogue load from jsDelivr at runtime, so the first load of the sky needs an internet connection. If the CDN is blocked, the archive itself still works but the sky renderer cannot load. See `THIRD_PARTY_NOTICES.md`.
 - The star field uses real catalogue coordinates. The upstream SkyEngine documentation describes its built-in Sun/planet position algorithm as approximately 1-degree accuracy; it is a live planetarium visualization, not a telescope/camera feed.
+
+## v0.5.1 navigation fix
+When leaving Our Little Universe, all navigation paths now clear the global live-sky state. The logo, back-to-home button, and other view transitions use the same cleanup path. Existing local data keys are unchanged.
+
+## v0.5.2 live sky experience
+- The planetarium canvas is fixed to the viewport and stays in place while the page scrolls.
+- A separate decorative canvas adds slow twinkling points and infrequent meteor streaks. These are atmospheric effects, not additional astronomical objects.
+- Use “进入沉浸模式” to hide site content and view the sky alone; tap “退出沉浸模式” or press Escape to return.
+- The “星空动效” control can turn decorative motion on/off. Respect for reduced-motion system settings is built in.

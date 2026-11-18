@@ -5,6 +5,8 @@
 </head>
 <body>
 <canvas id="liveSkyCanvas" class="sky-backdrop" aria-label="Our Little Universe live star background"></canvas>
+<canvas id="skyEffectsCanvas" class="sky-effects-backdrop" aria-hidden="true"></canvas>
+<button type="button" id="immersiveToggle" class="immersive-toggle" aria-pressed="false" aria-label="进入沉浸模式">进入沉浸模式 ⛶</button>
 <header class="topbar"><a class="brand" href="#home" id="brandHome">Elseverse<span> · 别境</span></a><nav><button id="langToggle" class="text-btn">EN</button><button id="manageToggle" class="text-btn">管理 / Manage</button></nav></header>
 <main class="main">
 <section id="homeView" class="view">
@@ -35,6 +37,7 @@
    <button type="button" class="sky-tool" id="skyConstellations" aria-pressed="true">星座连线</button>
    <button type="button" class="sky-tool" id="skyLabels" aria-pressed="false">星名</button>
    <button type="button" class="sky-tool" id="skyPlanets" aria-pressed="true">太阳与行星</button>
+   <button type="button" class="sky-tool" id="skyMotion" aria-pressed="true">星空动效</button>
   </div>
   <div class="sky-location-form hidden" id="localSkyForm">
    <p>手动填写你想查看的观测地点。此处仅用于本次「此时此地」模式，不会保存为共同地点。</p>

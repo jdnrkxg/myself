@@ -13,3 +13,17 @@
 - Browser geolocation requires HTTPS and user permission.
 - Shared observing coordinates are stored locally in this browser only.
 - Planet positions in the upstream SkyEngine are documented as approximately 1-degree accuracy.
+
+## v0.5.1 — Navigation layout bug fix
+- Centralized live-sky theme cleanup in `show()` so every transition away from Our Little Universe stops the sky engine and removes `body.sky-active`.
+- Fixed the logo-to-home path, which previously bypassed `stopLiveSky()` and could leave the dark global theme active.
+- Added defensive light-theme CSS resets for the header, text colors, backdrop canvas, and body when the sky mode is inactive.
+- Kept existing storage keys and archive data formats unchanged.
+
+## v0.5.2 — Immersive live sky
+- Added a one-tap immersive mode with a minimal floating exit control and Escape-key exit.
+- Promoted the real planetarium canvas to a viewport-fixed background so it no longer scrolls with page content.
+- Added a separate lightweight atmospheric canvas for subtle star twinkle and occasional meteor streaks; astronomical star/planet positions remain sourced from the real star catalogue/engine.
+- Added a persistent motion-effects toggle (local browser preference).
+- Kept the live sky active across Our Little Universe archive subpages; it stops when leaving the universe for the main Elseverse site.
+- Preserved existing archive and legacy world storage keys.
