@@ -11,12 +11,16 @@ A mobile-first bilingual-ready, local-first personal worlds archive prototype.
 - IndexedDB storage under a separate database `elseverse-archive-v1`; legacy media database is not modified.
 - JSON backup and merge import.
 - Responsive mobile layout.
+- Our Little Universe live planetarium with two modes: current local sky (browser location permission or manual coordinates) and a fixed shared sky (saved coordinates).
+- Real star catalogue rendering with horizon view, constellation lines, optional star labels, Sun/planet layer, and a live clock.
+- Shared sky location is stored locally and remains fixed until changed.
 
 ## Run
 Open `index.html` in a modern browser or deploy the folder to static hosting.
 
 ## Data and privacy notes
-- All content is stored locally in the current browser/device. There is no account, server, cloud sync, or cross-device sync.
+- All archive content and the shared-sky coordinates are stored locally in the current browser/device. There is no account, server, cloud sync, or cross-device sync.
+- Local geolocation is requested only after the visitor taps the location button. Coordinates are used in the browser to calculate the sky; this app does not send them to an Elseverse server.
 - `public` is only a visibility label in this prototype; it does not publish anything to the internet.
 - Do not treat local browser storage as strong security for sensitive content.
 - Back up important data before replacing the deployed site. The app retains the original `myself-worlds` and `myself-language` keys and does not delete the old `myself-media-v1` image database.
@@ -26,3 +30,5 @@ Open `index.html` in a modern browser or deploy the folder to static hosting.
 - English toggle currently updates language preference and button label; full translation coverage is a follow-up task.
 - The world module cards remain previews, not full editors.
 - Timeline is a chronological view of archive records; there is no backend sharing.
+- SkyEngine and its star catalogue load from jsDelivr at runtime, so the first load of the sky needs an internet connection. If the CDN is blocked, the archive itself still works but the sky renderer cannot load. See `THIRD_PARTY_NOTICES.md`.
+- The star field uses real catalogue coordinates. The upstream SkyEngine documentation describes its built-in Sun/planet position algorithm as approximately 1-degree accuracy; it is a live planetarium visualization, not a telescope/camera feed.

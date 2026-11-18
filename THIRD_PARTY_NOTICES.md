@@ -1,0 +1,36 @@
+# Third-party notices
+
+## SkyEngine
+
+This release loads SkyEngine from jsDelivr at runtime:
+- Project: https://github.com/drakkB/skyengine
+- Engine: https://cdn.jsdelivr.net/gh/drakkB/skyengine@main/sky-engine.js
+- Star data: https://cdn.jsdelivr.net/gh/drakkB/skyengine@main/sky-data.js
+- License: MIT, copyright (c) 2026 drakkB. The star catalogue is derived from d3-celestial (BSD 3-Clause) and uses Yale Bright Star Catalogue and Hipparcos/Gaia catalogue sources.
+
+MIT License
+
+Copyright (c) 2026 drakkB
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Star catalogue data in sky-data.js is derived from the d3-celestial project
+(https://github.com/ofrohn/d3-celestial), licensed under the BSD 3-Clause
+License, built on the Yale Bright Star Catalogue and the Hipparcos/Gaia
+catalogues (ESA).

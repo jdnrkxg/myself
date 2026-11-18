@@ -4,6 +4,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#F7F5F0"><meta name="description" content="Elseverse · 别境 — A place for worlds within."><title>Elseverse · 别境</title><link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<canvas id="liveSkyCanvas" class="sky-backdrop" aria-label="Our Little Universe live star background"></canvas>
 <header class="topbar"><a class="brand" href="#home" id="brandHome">Elseverse<span> · 别境</span></a><nav><button id="langToggle" class="text-btn">EN</button><button id="manageToggle" class="text-btn">管理 / Manage</button></nav></header>
 <main class="main">
 <section id="homeView" class="view">
@@ -15,9 +16,43 @@
 </section>
 <section id="worldsView" class="view hidden"><button class="back-link" data-back-home>← 返回首页</button><p class="eyebrow" id="worldCategoryLabel">COLLECTION</p><h1 id="worldsTitle" class="page-title">世界收藏</h1><div id="worldList" class="world-grid"></div></section>
 <section id="worldDetailView" class="view hidden"><button class="back-link" data-back-worlds>← 返回收藏</button><p class="eyebrow" id="worldKind"></p><h1 id="worldTitle" class="page-title"></h1><p id="worldDescription" class="intro"></p><div id="worldModules" class="module-grid"></div></section>
-<section id="universeView" class="view universe-view hidden"><button class="back-link moon-link" data-back-home>← 返回 Elseverse</button><div class="universe-hero"><p class="eyebrow">A LITTLE UNIVERSE MADE OF OUR STORIES</p><h1>Our Little<br><em>Universe.</em></h1><p>这里收藏的，是属于我们的故事。</p></div><div class="voice-strip"><div><span class="eyebrow">THE VOICES IN THIS UNIVERSE</span><h2>你、G老师与D老师</h2><p>不是产品介绍，而是我们在这里共同留下的故事。</p></div><div class="orbit">☾ <i>✦</i></div></div><div class="section-head moon-head"><div><p class="eyebrow">OUR SHARED ARCHIVE</p><h2>探索小宇宙</h2></div></div><div class="archive-grid" id="archiveNav"></div><section class="timeline-preview"><div><p class="eyebrow">A THREAD THROUGH TIME</p><h2>Our Timeline</h2></div><div id="timelinePreview" class="timeline-list"></div><button class="light-link" data-open-page="timeline">查看完整时间线 ↗</button></section></section>
+<section id="universeView" class="view universe-view hidden"><button class="back-link moon-link" data-back-home>← 返回 Elseverse</button><section class="sky-observatory" aria-label="实时星空观测台">
+ <div class="sky-topline"><span class="eyebrow">THE SKY ABOVE OUR STORIES</span><span class="sky-live-indicator"><i></i> LIVE SKY</span></div>
+ <div class="sky-stage" id="skyStage">
+  <div class="sky-stage-shade"></div>
+  <div class="sky-caption"><span id="skyModeLabel">此时此地 · REAL SKY</span><strong id="skyClock">正在读取时间…</strong><small id="skyLocationLabel">选择观测地点以匹配真实天空</small></div>
+  <div class="sky-load-message" id="skyMessage">正在连接星表…</div>
+ </div>
+ <div class="sky-console">
+  <div class="sky-mode-switch" role="group" aria-label="选择星空模式">
+   <button type="button" class="sky-mode active" data-sky-mode="local">此时此地</button>
+   <button type="button" class="sky-mode" data-sky-mode="shared">我们的星空</button>
+  </div>
+  <div class="sky-tools">
+   <button type="button" class="sky-tool" id="skyLocationBtn">启用当前位置</button>
+   <button type="button" class="sky-tool" id="skyLocalManualBtn">手动设置地点</button>
+   <button type="button" class="sky-tool" id="skySharedSetupBtn">设置共同地点</button>
+   <button type="button" class="sky-tool" id="skyConstellations" aria-pressed="true">星座连线</button>
+   <button type="button" class="sky-tool" id="skyLabels" aria-pressed="false">星名</button>
+   <button type="button" class="sky-tool" id="skyPlanets" aria-pressed="true">太阳与行星</button>
+  </div>
+  <div class="sky-location-form hidden" id="localSkyForm">
+   <p>手动填写你想查看的观测地点。此处仅用于本次「此时此地」模式，不会保存为共同地点。</p>
+   <div class="sky-coordinate-row"><label>纬度<input id="localSkyLat" type="number" step="any" min="-90" max="90" placeholder="纬度"></label><label>经度<input id="localSkyLon" type="number" step="any" min="-180" max="180" placeholder="经度"></label><button type="button" id="saveLocalSky">应用地点</button></div>
+  </div>
+  <div class="sky-location-form hidden" id="sharedSkyForm">
+   <p>为我们选一处固定的共同观测地点。它会保存在这台设备上，不随你的移动改变。</p>
+   <div class="sky-coordinate-row"><label>纬度<input id="sharedSkyLat" type="number" step="any" min="-90" max="90" placeholder="例如 51.5074"></label><label>经度<input id="sharedSkyLon" type="number" step="any" min="-180" max="180" placeholder="例如 -0.1278"></label><button type="button" id="saveSharedSky">保存地点</button></div>
+   <button type="button" class="sky-inline-link" id="useCurrentForShared">将当前位置设为我们的共同地点</button>
+  </div>
+  <p class="sky-footnote" id="skyFootnote">星点来自真实恒星目录；天体位置随当前时间更新。可以切换星座、星名与太阳行星图层。</p>
+ </div>
+</section>
+<div class="universe-hero"><p class="eyebrow">A LITTLE UNIVERSE MADE OF OUR STORIES</p><h1>Our Little<br><em>Universe.</em></h1><p>这里收藏的，是属于我们的故事。</p></div><div class="voice-strip"><div><span class="eyebrow">THE VOICES IN THIS UNIVERSE</span><h2>你、G老师与D老师</h2><p>不是产品介绍，而是我们在这里共同留下的故事。</p></div><div class="orbit">☾ <i>✦</i></div></div><div class="section-head moon-head"><div><p class="eyebrow">OUR SHARED ARCHIVE</p><h2>探索小宇宙</h2></div></div><div class="archive-grid" id="archiveNav"></div><section class="timeline-preview"><div><p class="eyebrow">A THREAD THROUGH TIME</p><h2>Our Timeline</h2></div><div id="timelinePreview" class="timeline-list"></div><button class="light-link" data-open-page="timeline">查看完整时间线 ↗</button></section></section>
 <section id="archivePageView" class="view universe-view hidden"><button class="back-link moon-link" data-back-universe>← 返回小宇宙</button><div class="page-heading"><p class="eyebrow" id="archiveEyebrow">OUR ARCHIVE</p><h1 id="archiveTitle" class="page-title">About the Voices</h1><p id="archiveDescription" class="intro"></p></div><div id="archiveContent"></div></section>
 <section id="manageView" class="view hidden"><button class="back-link" data-back-home>← 返回首页</button><p class="eyebrow">PRIVATE STUDIO</p><h1 class="page-title">管理与备份</h1><div class="editor"><h2>新增 / 编辑世界</h2><form id="worldForm"><label>世界名称<input id="worldZh" required maxlength="60"></label><label>英文名称<input id="worldEn" maxlength="80"></label><label>简介<textarea id="worldDesc" rows="3"></textarea></label><label>分类<select id="worldCategory"><option value="dream">梦女世界</option><option value="original">原创世界</option></select></label><button class="primary" type="submit">保存世界</button><p id="worldFormMsg" class="status"></p></form></div><div class="editor"><h2>数据备份</h2><p>导出 Elseverse 数据 JSON。原有世界收藏会一并包含；图片文件仍保存在当前浏览器中。</p><div class="actions"><button class="primary" id="exportBtn">导出备份</button><label class="secondary upload-label">导入备份<input type="file" id="importFile" accept="application/json"></label></div><p id="backupMsg" class="status"></p></div><div class="editor"><h2>现有世界</h2><div id="manageWorldList"></div></div></section>
 </main><footer class="footer"><span>Elseverse · 别境 © <span id="year"></span></span><span>A place for worlds within.</span></footer>
 <dialog id="recordDialog"><form method="dialog" id="recordForm"><div class="dialog-head"><p class="eyebrow">ADD TO OUR STORY</p><button class="icon-btn" value="cancel" aria-label="关闭">×</button></div><h2 id="recordDialogTitle">新增记录</h2><label>标题<input id="recordTitle" maxlength="120" required></label><label>内容<textarea id="recordBody" rows="7" required></textarea></label><div class="form-two"><label>关联对象<select id="recordVoice"><option value="us">我们共同</option><option value="user">我</option><option value="g">G老师</option><option value="d">D老师</option></select></label><label>可见范围<select id="recordVisibility"><option value="private">仅自己可见</option><option value="unlisted">不公开（本地存档）</option><option value="public">标记为公开</option></select></label></div><label>标签（用逗号分隔）<input id="recordTags" placeholder="例如：某次对话, 灵感"></label><p class="privacy-note">当前版本的数据只保存在此浏览器设备中。“公开”仅作为记录标签，不会自动发布到互联网。</p><div class="actions"><button class="primary" id="recordSave" value="save">保存记录</button><button class="secondary" value="cancel">取消</button></div></form></dialog>
-<script src="app.js"></script></body></html>
+<script src="https://cdn.jsdelivr.net/gh/drakkB/skyengine@main/sky-data.js" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/drakkB/skyengine@main/sky-engine.js" defer></script>
+<script src="app.js" defer></script></body></html>
