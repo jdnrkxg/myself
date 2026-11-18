@@ -6,7 +6,16 @@
 <body>
 <canvas id="liveSkyCanvas" class="sky-backdrop" aria-label="Our Little Universe live star background"></canvas>
 <canvas id="skyEffectsCanvas" class="sky-effects-backdrop" aria-hidden="true"></canvas>
+<div id="deepSkyViewer" class="deep-sky-viewer" aria-label="真实天文巡天影像，可缩放和拖动浏览"></div>
 <button type="button" id="immersiveToggle" class="immersive-toggle" aria-pressed="false" aria-label="进入沉浸模式">进入沉浸模式 ⛶</button>
+<div id="deepSkyFloatingControls" class="deep-sky-floating-controls" aria-label="深空观测控制">
+ <div class="deep-control-row"><label for="deepSkySurvey">巡天影像</label><select id="deepSkySurvey"><option value="P/DSS2/color">DSS2 可见光全空</option><option value="P/PanSTARRS/DR1/color-i-r-g">Pan-STARRS 深空细节</option><option value="P/2MASS/color">2MASS 红外</option><option value="P/allWISE/color">WISE 红外</option></select></div>
+ <div class="deep-control-row"><label for="deepSkyTarget">观测目标</label><select id="deepSkyTarget"><option value="galactic">银河中心</option><option value="andromeda">仙女座星系 M31</option><option value="orion">猎户座大星云 M42</option><option value="pleiades">昴星团 M45</option><option value="crab">蟹状星云 M1</option><option value="deepfield">哈勃深场区域</option></select></div>
+ <div class="deep-control-row"><label for="deepSkySearch">搜索天体</label><input id="deepSkySearch" type="search" placeholder="输入名称，例如 M31、Orion Nebula"><button type="button" id="deepSkySearchBtn">定位</button></div>
+ <div class="deep-control-row zoom-row"><label for="deepSkyZoom">视野缩放</label><input id="deepSkyZoom" type="range" min="0" max="100" value="34" step="1"><button type="button" id="deepSkyReset">重置</button></div>
+ <div class="deep-control-actions"><button type="button" id="deepSkyBackLive">返回实时星图</button><button type="button" id="deepSkyExitImmersive">退出沉浸</button></div>
+ <p id="deepSkyStatus" role="status" aria-live="polite">真实天文巡天影像 · 可双指缩放、拖动探索</p>
+</div>
 <header class="topbar"><a class="brand" href="#home" id="brandHome">Elseverse<span> · 别境</span></a><nav><button id="langToggle" class="text-btn">EN</button><button id="manageToggle" class="text-btn">管理 / Manage</button></nav></header>
 <main class="main">
 <section id="homeView" class="view">
@@ -30,7 +39,11 @@
    <button type="button" class="sky-mode active" data-sky-mode="local">此时此地</button>
    <button type="button" class="sky-mode" data-sky-mode="shared">我们的星空</button>
   </div>
-  <div class="sky-tools">
+  <div class="sky-view-switch" role="group" aria-label="观测视图">
+   <button type="button" class="sky-mode active" id="skyViewLive">实时星图</button>
+   <button type="button" class="sky-mode" id="skyViewDeep">深空巡天</button>
+  </div>
+  <div class="sky-tools" id="liveSkyTools">
    <button type="button" class="sky-tool" id="skyLocationBtn">启用当前位置</button>
    <button type="button" class="sky-tool" id="skyLocalManualBtn">手动设置地点</button>
    <button type="button" class="sky-tool" id="skySharedSetupBtn">设置共同地点</button>
@@ -48,7 +61,7 @@
    <div class="sky-coordinate-row"><label>纬度<input id="sharedSkyLat" type="number" step="any" min="-90" max="90" placeholder="例如 51.5074"></label><label>经度<input id="sharedSkyLon" type="number" step="any" min="-180" max="180" placeholder="例如 -0.1278"></label><button type="button" id="saveSharedSky">保存地点</button></div>
    <button type="button" class="sky-inline-link" id="useCurrentForShared">将当前位置设为我们的共同地点</button>
   </div>
-  <p class="sky-footnote" id="skyFootnote">星点来自真实恒星目录；天体位置随当前时间更新。可以切换星座、星名与太阳行星图层。</p>
+  <p class="sky-footnote" id="skyFootnote">实时星图依据恒星目录和观测地点计算天体位置。切换到「深空巡天」后，可放大、缩小并拖动浏览真实天文巡天影像。</p>
  </div>
 </section>
 <div class="universe-hero"><p class="eyebrow">A LITTLE UNIVERSE MADE OF OUR STORIES</p><h1>Our Little<br><em>Universe.</em></h1><p>这里收藏的，是属于我们的故事。</p></div><div class="voice-strip"><div><span class="eyebrow">THE VOICES IN THIS UNIVERSE</span><h2>你、G老师与D老师</h2><p>不是产品介绍，而是我们在这里共同留下的故事。</p></div><div class="orbit">☾ <i>✦</i></div></div><div class="section-head moon-head"><div><p class="eyebrow">OUR SHARED ARCHIVE</p><h2>探索小宇宙</h2></div></div><div class="archive-grid" id="archiveNav"></div><section class="timeline-preview"><div><p class="eyebrow">A THREAD THROUGH TIME</p><h2>Our Timeline</h2></div><div id="timelinePreview" class="timeline-list"></div><button class="light-link" data-open-page="timeline">查看完整时间线 ↗</button></section></section>
@@ -58,4 +71,5 @@
 <dialog id="recordDialog"><form method="dialog" id="recordForm"><div class="dialog-head"><p class="eyebrow">ADD TO OUR STORY</p><button class="icon-btn" value="cancel" aria-label="关闭">×</button></div><h2 id="recordDialogTitle">新增记录</h2><label>标题<input id="recordTitle" maxlength="120" required></label><label>内容<textarea id="recordBody" rows="7" required></textarea></label><div class="form-two"><label>关联对象<select id="recordVoice"><option value="us">我们共同</option><option value="user">我</option><option value="g">G老师</option><option value="d">D老师</option></select></label><label>可见范围<select id="recordVisibility"><option value="private">仅自己可见</option><option value="unlisted">不公开（本地存档）</option><option value="public">标记为公开</option></select></label></div><label>标签（用逗号分隔）<input id="recordTags" placeholder="例如：某次对话, 灵感"></label><p class="privacy-note">当前版本的数据只保存在此浏览器设备中。“公开”仅作为记录标签，不会自动发布到互联网。</p><div class="actions"><button class="primary" id="recordSave" value="save">保存记录</button><button class="secondary" value="cancel">取消</button></div></form></dialog>
 <script src="https://cdn.jsdelivr.net/gh/drakkB/skyengine@main/sky-data.js" defer></script>
 <script src="https://cdn.jsdelivr.net/gh/drakkB/skyengine@main/sky-engine.js" defer></script>
+<script src="https://aladin.cds.unistra.fr/AladinLite/api/v3/3.9.4/aladin.js" charset="utf-8" defer></script>
 <script src="app.js" defer></script></body></html>

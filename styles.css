@@ -60,3 +60,35 @@ body.sky-immersive #liveSkyCanvas.sky-backdrop,body.sky-immersive #skyEffectsCan
  body.sky-active #skyEffectsCanvas.sky-effects-backdrop{opacity:.35;}
  .immersive-toggle{transition:none;}
 }
+
+
+/* v0.6 — Elseverse Observatory: authentic survey imagery + navigable deep sky */
+.deep-sky-viewer{display:none;position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;background:#03060d;z-index:1;overflow:hidden;touch-action:pan-x pan-y;}
+body.sky-deep-mode #deepSkyViewer{display:block;}
+body.sky-deep-mode #liveSkyCanvas.sky-backdrop{display:none!important;}
+body.sky-deep-mode #skyEffectsCanvas.sky-effects-backdrop{display:none!important;}
+body.sky-deep-mode .sky-stage-shade,body.sky-deep-mode .sky-caption,body.sky-deep-mode .sky-load-message{display:none!important;}
+body.sky-deep-mode .sky-stage{background:transparent!important;}
+body.sky-deep-mode .sky-observatory{background:transparent!important;}
+.deep-sky-floating-controls{display:none;position:fixed;z-index:10002;left:50%;bottom:max(16px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(560px,calc(100vw - 24px));padding:13px 15px 10px;background:rgba(7,12,22,.88);border:1px solid rgba(226,233,245,.22);box-shadow:0 12px 42px rgba(0,0,0,.34);backdrop-filter:blur(14px);color:#edf1f7;}
+.deep-sky-floating-controls.visible{display:block;}
+.deep-control-row{display:flex;align-items:center;gap:12px;margin:0 0 10px;}
+.deep-control-row label{flex:0 0 76px;color:#aeb9c9;font-size:10px;letter-spacing:.08em;}
+.deep-control-row select{min-width:0;flex:1;background:#111c2c;color:#f4f1ea;border:1px solid #ffffff28;padding:9px 10px;font-size:11px;border-radius:0;}
+.deep-control-row input[type=range]{flex:1;min-width:0;accent-color:#c8d2e2;}
+.deep-control-row button,.deep-control-actions button{background:#172337;color:#e9edf5;border:1px solid #ffffff2b;padding:8px 11px;font-size:10px;white-space:nowrap;}
+.deep-control-actions{display:flex;gap:8px;justify-content:flex-end;}
+.deep-control-actions button:first-child{margin-right:auto;}
+.deep-sky-floating-controls p{font-size:9px;line-height:1.5;color:#8795aa;margin:9px 0 0;text-align:center;letter-spacing:.04em;}
+body.sky-immersive.sky-deep-mode .deep-sky-viewer{z-index:1;}
+body.sky-immersive.sky-deep-mode .deep-sky-floating-controls{bottom:max(18px,env(safe-area-inset-bottom));}
+body.sky-immersive.sky-deep-mode .immersive-toggle{z-index:10003;}
+/* Keep Aladin's required attribution visible; its own logo/link must not be hidden. */
+#deepSkyViewer .aladin-logo, #deepSkyViewer a[href*="aladin"]{z-index:20!important;}
+@media(max-width:600px){
+ .deep-sky-floating-controls{padding:11px 12px 9px;width:calc(100vw - 18px);}
+ .deep-control-row{gap:8px;margin-bottom:8px;}
+ .deep-control-row label{flex-basis:62px;font-size:9px;}
+ .deep-control-row select{font-size:10px;padding:8px;}
+ .deep-control-row button,.deep-control-actions button{padding:8px 9px;font-size:9px;}
+}

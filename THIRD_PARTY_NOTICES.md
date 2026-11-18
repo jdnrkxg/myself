@@ -34,3 +34,21 @@ Star catalogue data in sky-data.js is derived from the d3-celestial project
 (https://github.com/ofrohn/d3-celestial), licensed under the BSD 3-Clause
 License, built on the Yale Bright Star Catalogue and the Hipparcos/Gaia
 catalogues (ESA).
+
+## Aladin Lite
+
+This release loads Aladin Lite v3.9.4 at runtime from the official CDS Strasbourg endpoint:
+- Script: https://aladin.cds.unistra.fr/AladinLite/api/v3/3.9.4/aladin.js
+- Project and documentation: https://cds-astro.github.io/aladin-lite/
+- License: GNU Lesser General Public License v3.0 or later (LGPL-3.0-or-later).
+- Copyright and attribution remain with the Aladin Lite / CDS authors. The Aladin Lite logo/link is intentionally left visible in the viewer as required by the project's integration terms.
+
+## HiPS astronomical survey imagery
+
+The deep-sky explorer requests survey tiles from the upstream HiPS services selected by Aladin Lite:
+- DSS2 color: `P/DSS2/color`
+- Pan-STARRS DR1 color: `P/PanSTARRS/DR1/color-i-r-g`
+- 2MASS color: `P/2MASS/color`
+- AllWISE color: `P/allWISE/color`
+
+HiPS is the Hierarchical Progressive Surveys format. Survey data and tile hosting are provided by the respective astronomical survey/data-center providers; Elseverse does not redistribute or bundle those image tiles. See https://aladin.cds.unistra.fr/hips/ and https://cds.unistra.fr/ for survey information and mirrors.

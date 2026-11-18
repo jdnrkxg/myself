@@ -27,3 +27,12 @@
 - Added a persistent motion-effects toggle (local browser preference).
 - Kept the live sky active across Our Little Universe archive subpages; it stops when leaving the universe for the main Elseverse site.
 - Preserved existing archive and legacy world storage keys.
+
+## v0.6 — Elseverse Observatory
+- Added Aladin Lite v3.9.4 as a separate real survey-image explorer alongside the live local/shared star chart.
+- Added DSS2, Pan-STARRS DR1, 2MASS and AllWISE HiPS survey choices.
+- Added presets for Galactic Centre, M31, M42, M45, M1 and the Hubble Deep Field region, plus named-object lookup.
+- Added logarithmic field-of-view slider and retained native touch pinch/drag interaction.
+- Added fixed viewport deep-sky layer and floating controls that remain usable in immersive mode.
+- Preserved legacy local storage keys, archive IndexedDB schema and old media database.
+- Added third-party license and survey attribution notes.
