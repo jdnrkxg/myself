@@ -82,7 +82,7 @@ function initDeepSky(){
  deepSkyLoading=true;
  window.__elseverseDeepSkyPromise=window.A.init.then(()=>{
    const initialTarget=$('deepSkyTarget')?.value||'galactic';
-   deepSkyInstance=window.A.aladin('#deepSkyViewer',{survey:$('deepSkySurvey')?.value||'P/DSS2/color',target:'galactic center',fov:deepSkyFov,cooFrame:'equatorial',showCooGrid:false,showReticle:false,showCooGridControl:true,showSimbadPointerControl:true});
+   deepSkyInstance=window.A.aladin('#deepSkyViewer',{survey:$('deepSkySurvey')?.value||'https://skies.esac.esa.int/DSSColor',target:'galactic center',fov:deepSkyFov,cooFrame:'equatorial',showCooGrid:false,showReticle:false,showCooGridControl:true,showSimbadPointerControl:true});
    deepSkyReady=true;deepSkyLoading=false;
    if($('deepSkyStatus'))$('deepSkyStatus').textContent='已连接真实巡天影像 · 可双指缩放、拖动探索';
    // Keep the survey provider's required attribution visible inside the viewer.
