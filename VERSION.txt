@@ -1,0 +1,2 @@
+Elseverse v0.7 Photo Sky
+Replaces v0.6 Observatory source bundle.

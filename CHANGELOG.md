@@ -36,3 +36,11 @@
 - Added fixed viewport deep-sky layer and floating controls that remain usable in immersive mode.
 - Preserved legacy local storage keys, archive IndexedDB schema and old media database.
 - Added third-party license and survey attribution notes.
+
+## v0.7 — Photo Sky
+- Removed Aladin Lite, the deep-sky observing view, all deep-sky controls, and the external Aladin script.
+- Removed SkyEngine and the remote star-catalogue runtime dependency.
+- Replaced the astronomy engines with selectable NASA/Hubble/Webb photo backgrounds.
+- Kept lightweight local Canvas star twinkle and meteor effects.
+- Added decorative constellation lines, zoom, favorites, and immersive mode.
+- Preserved archive pages, IndexedDB records, legacy world/language keys, and backup/import behavior.

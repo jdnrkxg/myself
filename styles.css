@@ -4,7 +4,7 @@
 .sky-observatory{position:relative;margin:8px 0 50px;padding:14px;background:#080d18;border:1px solid #ffffff20;box-shadow:0 24px 70px #0004;overflow:hidden}
 .sky-topline{display:flex;justify-content:space-between;align-items:center;padding:2px 5px 12px}.sky-live-indicator{font-size:9px;letter-spacing:.18em;color:#b7c5d8;display:flex;align-items:center;gap:8px}.sky-live-indicator i{width:6px;height:6px;border-radius:50%;background:#8dc8b1;box-shadow:0 0 12px #8dc8b1;animation:skyPulse 2.2s ease-in-out infinite}
 .sky-stage{height:clamp(330px,52vw,590px);min-height:330px;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 52%,#172844 0,#0b1425 46%,#050912 100%);isolation:isolate;touch-action:pan-y}
-#liveSkyCanvas{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab}#liveSkyCanvas:active{cursor:grabbing}.sky-stage-shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#05091230 0%,transparent 24%,transparent 65%,#050912b8 100%);z-index:1}
+.sky-stage-shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#05091230 0%,transparent 24%,transparent 65%,#050912b8 100%);z-index:1}
 .sky-caption{position:absolute;z-index:2;left:22px;bottom:20px;display:grid;gap:5px;text-shadow:0 2px 12px #000}.sky-caption span{font-size:9px;letter-spacing:.16em;color:#c3ccdb}.sky-caption strong{font:24px Georgia,serif;color:#f1f0ed;font-weight:400}.sky-caption small{font-size:10px;color:#aeb9c9}.sky-load-message{position:absolute;z-index:3;left:50%;top:50%;transform:translate(-50%,-50%);font-size:11px;letter-spacing:.08em;color:#dce3ef;background:#0b1425b8;padding:10px 15px;border:1px solid #ffffff20;backdrop-filter:blur(8px);text-align:center;max-width:85%}.sky-load-message.hidden{display:none}
 .sky-console{padding:15px 5px 3px}.sky-mode-switch{display:flex;gap:6px;margin-bottom:12px}.sky-mode{border:1px solid #ffffff25;background:transparent;color:#aeb9c9;padding:9px 15px;font-size:11px;letter-spacing:.04em}.sky-mode.active{background:#e0e4ec;color:#101827;border-color:#e0e4ec}.sky-tools{display:flex;flex-wrap:wrap;gap:8px}.sky-tool{border:1px solid #ffffff24;background:#101b2c;color:#c4ccda;padding:8px 11px;font-size:10px}.sky-tool[aria-pressed="true"]{border-color:#9baac2;color:#f5f4ef;background:#1c2b41}.sky-location-form{margin-top:13px;padding:14px;background:#111d30;border:1px solid #ffffff1b}.sky-location-form p{font-size:11px;color:#aeb9c9;line-height:1.7;margin:0 0 12px}.sky-coordinate-row{display:flex;align-items:end;gap:10px;flex-wrap:wrap}.sky-coordinate-row label{display:grid;gap:6px;color:#aeb9c9;font-size:10px;flex:1;min-width:110px}.sky-coordinate-row input{width:100%;background:#080f1c;border:1px solid #ffffff28;padding:9px;color:#f4f1ea}.sky-coordinate-row button{border:0;background:#d8deea;color:#111827;padding:10px 14px;font-size:10px}.sky-inline-link{border:0;background:none;color:#c5cde0;text-decoration:underline;text-underline-offset:4px;font-size:10px;padding:12px 0 0}.sky-footnote{color:#8491a6;font-size:10px;line-height:1.7;margin:12px 0 0}.sky-observatory .hidden{display:none!important}
 @keyframes skyPulse{0%,100%{opacity:.45;box-shadow:0 0 5px #8dc8b1}50%{opacity:1;box-shadow:0 0 14px #8dc8b1}}
@@ -30,11 +30,6 @@ body.sky-active .footer{border-color:#ffffff20;color:#9ca9bc}
 .sky-stage-shade{background:linear-gradient(180deg,#05091222 0%,transparent 24%,transparent 65%,#05091255 100%)}
 
 /* v0.5.2 — fixed planetarium background, atmospheric motion and immersive viewing */
-body.sky-active #liveSkyCanvas.sky-backdrop{
-  display:block!important;position:fixed!important;left:0!important;top:0!important;right:auto!important;bottom:auto!important;
-  width:100vw!important;height:100vh!important;height:100dvh!important;max-width:none!important;max-height:none!important;
-  z-index:0!important;pointer-events:none!important;object-fit:fill;background:#080d18;
-}
 .sky-effects-backdrop{display:none;}
 body.sky-active #skyEffectsCanvas.sky-effects-backdrop{
   display:block;position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;z-index:1;pointer-events:none;opacity:.9;
@@ -51,9 +46,9 @@ body.sky-immersive{overflow:hidden!important;background:#050912!important;}
 body.sky-immersive .topbar,body.sky-immersive .main,body.sky-immersive .footer{visibility:hidden!important;pointer-events:none!important;}
 body.sky-immersive .immersive-toggle{visibility:visible!important;pointer-events:auto!important;opacity:.72;}
 body.sky-immersive .immersive-toggle:hover,body.sky-immersive .immersive-toggle:focus-visible{opacity:1;}
-body.sky-immersive #liveSkyCanvas.sky-backdrop,body.sky-immersive #skyEffectsCanvas.sky-effects-backdrop{z-index:0!important;}
+body.sky-immersive #skyEffectsCanvas.sky-effects-backdrop{z-index:0!important;}
 @media(max-width:600px){
- body.sky-active #liveSkyCanvas.sky-backdrop,body.sky-active #skyEffectsCanvas.sky-effects-backdrop{height:100dvh;}
+ body.sky-active #skyEffectsCanvas.sky-effects-backdrop{height:100dvh;}
  .immersive-toggle{top:max(12px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right));padding:9px 12px;}
 }
 @media(prefers-reduced-motion:reduce){
@@ -62,33 +57,46 @@ body.sky-immersive #liveSkyCanvas.sky-backdrop,body.sky-immersive #skyEffectsCan
 }
 
 
-/* v0.6 — Elseverse Observatory: authentic survey imagery + navigable deep sky */
-.deep-sky-viewer{display:none;position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;background:#03060d;z-index:1;overflow:hidden;touch-action:pan-x pan-y;}
-body.sky-deep-mode #deepSkyViewer{display:block;}
-body.sky-deep-mode #liveSkyCanvas.sky-backdrop{display:none!important;}
-body.sky-deep-mode #skyEffectsCanvas.sky-effects-backdrop{display:none!important;}
-body.sky-deep-mode .sky-stage-shade,body.sky-deep-mode .sky-caption,body.sky-deep-mode .sky-load-message{display:none!important;}
-body.sky-deep-mode .sky-stage{background:transparent!important;}
-body.sky-deep-mode .sky-observatory{background:transparent!important;}
-.deep-sky-floating-controls{display:none;position:fixed;z-index:10002;left:50%;bottom:max(16px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(560px,calc(100vw - 24px));padding:13px 15px 10px;background:rgba(7,12,22,.88);border:1px solid rgba(226,233,245,.22);box-shadow:0 12px 42px rgba(0,0,0,.34);backdrop-filter:blur(14px);color:#edf1f7;}
-.deep-sky-floating-controls.visible{display:block;}
-.deep-control-row{display:flex;align-items:center;gap:12px;margin:0 0 10px;}
-.deep-control-row label{flex:0 0 76px;color:#aeb9c9;font-size:10px;letter-spacing:.08em;}
-.deep-control-row select{min-width:0;flex:1;background:#111c2c;color:#f4f1ea;border:1px solid #ffffff28;padding:9px 10px;font-size:11px;border-radius:0;}
-.deep-control-row input[type=range]{flex:1;min-width:0;accent-color:#c8d2e2;}
-.deep-control-row button,.deep-control-actions button{background:#172337;color:#e9edf5;border:1px solid #ffffff2b;padding:8px 11px;font-size:10px;white-space:nowrap;}
-.deep-control-actions{display:flex;gap:8px;justify-content:flex-end;}
-.deep-control-actions button:first-child{margin-right:auto;}
-.deep-sky-floating-controls p{font-size:9px;line-height:1.5;color:#8795aa;margin:9px 0 0;text-align:center;letter-spacing:.04em;}
-body.sky-immersive.sky-deep-mode .deep-sky-viewer{z-index:1;}
-body.sky-immersive.sky-deep-mode .deep-sky-floating-controls{bottom:max(18px,env(safe-area-inset-bottom));}
-body.sky-immersive.sky-deep-mode .immersive-toggle{z-index:10003;}
-/* Keep Aladin's required attribution visible; its own logo/link must not be hidden. */
-#deepSkyViewer .aladin-logo, #deepSkyViewer a[href*="aladin"]{z-index:20!important;}
+
+
+/* v0.7 — stable photo sky: no SkyEngine, no Aladin Lite, no WebGL */
+#photoSkyBackdrop{display:none;position:fixed;inset:0;z-index:0;pointer-events:none;background-color:#050912;background-position:center;background-repeat:no-repeat;background-size:cover;transform:scale(var(--sky-zoom,1));transition:transform .25s ease,background-image .45s ease;will-change:transform;}
+body.sky-active #photoSkyBackdrop{display:block;}
+body.sky-active #skyEffectsCanvas.sky-effects-backdrop{display:block;position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;z-index:1;pointer-events:none;opacity:.88;}
+body.sky-active .topbar,body.sky-active .main,body.sky-active .footer{position:relative;z-index:2;}
+body.sky-active .universe-view{background:transparent!important;}
+body.sky-active .sky-observatory{background:rgba(5,9,18,.18);border-color:#ffffff22;backdrop-filter:blur(1px);}
+body.sky-active .sky-stage{background:transparent!important;}
+body.sky-active .sky-stage-shade{background:linear-gradient(180deg,#05091218 0%,transparent 25%,transparent 68%,#05091288 100%);}
+.photo-sky-system{padding:14px;background:rgba(4,8,17,.25)!important;border:1px solid #ffffff20!important;box-shadow:0 24px 70px #0003!important;}
+.constellation-overlay{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;transition:opacity .25s}
+.constellation-overlay.hidden{display:none}
+.photo-scene-row{display:flex;gap:7px;overflow-x:auto;padding:2px 0 13px;scrollbar-width:thin}
+.photo-scene{flex:0 0 auto;border:1px solid #ffffff2c;background:#0c1729a8;color:#c4ccda;padding:9px 13px;font-size:10px}
+.photo-scene.active{background:#dce2ec;color:#111827;border-color:#dce2ec}
+.photo-tools{display:flex;gap:8px;flex-wrap:wrap}
+.photo-tools .sky-tool{font-size:10px}
+.photo-tools #skyFavorite[aria-pressed="true"]{border-color:#d8c79c;color:#f1dfb1}
+.sky-zoom-row{display:flex;align-items:center;gap:10px;margin-top:13px;color:#aeb9c9;font-size:10px}
+.sky-zoom-row label{white-space:nowrap}
+.sky-zoom-row input{flex:1;min-width:60px;accent-color:#c8d2e2}
+.sky-zoom-row output{min-width:38px;text-align:right;color:#dce3ef;font-variant-numeric:tabular-nums}
+.sky-favorites{margin-top:13px;padding:13px;background:#0b1425d9;border:1px solid #ffffff20}
+.sky-favorites.hidden{display:none}
+#skyFavoritesList{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
+.sky-favorite-item{border:1px solid #ffffff2c;background:#172337;color:#e9edf5;padding:8px 11px;font-size:10px}
+.sky-favorite-empty{color:#9da9bc;font-size:11px}
+.sky-load-message.hidden{display:none}
+body.sky-immersive{overflow:hidden!important;background:#050912!important}
+body.sky-immersive .topbar,body.sky-immersive .main,body.sky-immersive .footer{visibility:hidden!important;pointer-events:none!important}
+body.sky-immersive .immersive-toggle{visibility:visible!important;pointer-events:auto!important;opacity:.72}
+body.sky-immersive #photoSkyBackdrop,body.sky-immersive #skyEffectsCanvas{z-index:0!important}
 @media(max-width:600px){
- .deep-sky-floating-controls{padding:11px 12px 9px;width:calc(100vw - 18px);}
- .deep-control-row{gap:8px;margin-bottom:8px;}
- .deep-control-row label{flex-basis:62px;font-size:9px;}
- .deep-control-row select{font-size:10px;padding:8px;}
- .deep-control-row button,.deep-control-actions button{padding:8px 9px;font-size:9px;}
+ .photo-sky-system{margin:0 -4px 38px;padding:9px}
+ .photo-tools{gap:6px}
+ .photo-tools .sky-tool{padding:8px 9px;font-size:9px}
+ .sky-zoom-row{gap:7px}
+ .sky-zoom-row label{font-size:9px}
+ .photo-scene{padding:9px 11px}
 }
+@media(prefers-reduced-motion:reduce){#photoSkyBackdrop{transition:none}.sky-live-indicator i{animation:none}}
