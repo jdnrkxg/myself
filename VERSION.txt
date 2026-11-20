@@ -1,2 +1,2 @@
-Elseverse v0.7 Photo Sky
-Replaces v0.6 Observatory source bundle.
+Elseverse v0.7 + IF Lines Bubble Prototype 0.1
+Adds CSS-only translucent world bubbles to Dream Worlds / Original Worlds collections.

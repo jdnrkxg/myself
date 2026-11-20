@@ -44,3 +44,9 @@
 - Kept lightweight local Canvas star twinkle and meteor effects.
 - Added decorative constellation lines, zoom, favorites, and immersive mode.
 - Preserved archive pages, IndexedDB records, legacy world/language keys, and backup/import behavior.
+
+## IF Lines Bubble Prototype 0.1
+- Replaced flat world collection tiles with responsive translucent orb entrances.
+- Uses CSS gradients, glass highlights, abstract orbital filaments and restrained sparkle; no interior buildings.
+- Preserves existing world IDs, localStorage keys, archive IndexedDB, and world detail navigation.
+- Mobile-first two-column bubble layout with reduced-motion support.

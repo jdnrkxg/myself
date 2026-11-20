@@ -33,7 +33,15 @@ async function allRecords(){try{const d=await openDB();return await new Promise(
 async function saveRecord(record){const d=await openDB();return new Promise((res,rej)=>{const tx=d.transaction(ARCHIVE_STORE,'readwrite');tx.objectStore(ARCHIVE_STORE).put(record);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})}
 async function deleteRecord(recordId){const d=await openDB();return new Promise((res,rej)=>{const tx=d.transaction(ARCHIVE_STORE,'readwrite');tx.objectStore(ARCHIVE_STORE).delete(recordId);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})}
 function renderRecent(){const items=[...worlds].slice(-8).reverse();$('recentWorlds').innerHTML=items.length?items.map(w=>`<button class="recent-card" data-world-id="${esc(w.id)}"><small>${w.category==='dream'?'DREAM WORLDS':'ORIGINAL WORLDS'}</small><strong>${esc(w.zh)}</strong><small>${esc(w.en||w.description||'')}</small></button>`).join(''):'<p class="intro">还没有收录世界。可以从管理页面添加第一个世界。</p>';}
-function renderWorlds(){const list=worlds.filter(w=>w.category===currentCategory);$('worldsTitle').textContent=currentCategory==='dream'?'梦女世界':'原创世界';$('worldCategoryLabel').textContent=currentCategory==='dream'?'DREAM WORLDS':'ORIGINAL WORLDS';$('worldList').innerHTML=list.length?list.map(w=>`<button class="world-item" data-world-id="${esc(w.id)}"><small>${w.category==='dream'?'DREAM WORLD':'ORIGINAL WORLD'}</small><strong>${esc(w.zh)}</strong><small>${esc(w.en||w.description||'')}</small></button>`).join(''):'<p class="intro">这里还空着。你可以在管理页面添加一个世界。</p>';}
+function renderWorlds(){
+ const list=worlds.filter(w=>w.category===currentCategory);
+ $('worldsTitle').textContent=currentCategory==='dream'?'梦女世界':'原创世界';
+ $('worldCategoryLabel').textContent=currentCategory==='dream'?'DREAM WORLDS':'ORIGINAL WORLDS';
+ $('worldList').innerHTML=list.length?list.map((w,i)=>`<button class="world-item world-bubble-card bubble-tone-${i%6}" data-world-id="${esc(w.id)}" aria-label="进入世界：${esc(w.zh)}">
+   <span class="world-bubble-orb" aria-hidden="true"><span class="bubble-gloss"></span><span class="bubble-filament"></span><span class="bubble-spark bubble-spark-a">✧</span><span class="bubble-spark bubble-spark-b">·</span></span>
+   <span class="world-bubble-copy"><small>${w.category==='dream'?'DREAM WORLD':'ORIGINAL WORLD'}</small><strong>${esc(w.zh)}</strong><small>${esc(w.en||w.description||'')}</small><span class="bubble-enter">探索这个世界　↗</span></span>
+ </button>`).join(''):'<p class="intro">这里还空着。你可以在管理页面添加一个世界。</p>';
+}
 function openWorld(id){const w=worlds.find(x=>x.id===id);if(!w)return;$('worldKind').textContent=w.category==='dream'?'DREAM WORLD':'ORIGINAL WORLD';$('worldTitle').textContent=w.zh;$('worldDescription').textContent=w.description||'';$('worldModules').innerHTML=(w.modules||[]).map(mid=>{const m=modules.find(x=>x[0]===mid);return m?`<div class="module-card"><strong>${m[1]}</strong><span>${m[2]} · 模块入口将在后续版本开放编辑</span></div>`:''}).join('');show('worldDetailView');}
 function renderArchiveNav(){$('archiveNav').innerHTML=pages.map(p=>`<button class="archive-card" data-open-page="${p.id}"><span class="num">${p.n} / OUR STORY</span><strong>${p.en}</strong><small>${p.zh}</small></button>`).join('');}
 function pageRecords(p){return records.filter(r=>r.type===p.kind).sort((a,b)=>(b.updatedAt||b.createdAt).localeCompare(a.updatedAt||a.createdAt));}

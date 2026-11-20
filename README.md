@@ -35,3 +35,6 @@ Open `index.html` in a modern browser or deploy the folder to static hosting. In
 - NGC 604: NASA, ESA, CSA, STScI.
 - NGC 3603: NASA, ESA, R. O'Connell et al., WFC3 Science Oversight Committee, Hubble Heritage Team (STScI/AURA).
 - Hubble Deep Field: R. Williams, the Hubble Deep Field Team, STScI and NASA.
+
+## IF Lines Bubble Prototype 0.1
+World collection pages render each saved world as a CSS-only translucent orb. Orb palettes vary by card position; no extra image downloads, WebGL, or new storage fields are required. Existing world records and navigation are preserved.
