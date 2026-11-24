@@ -102,25 +102,16 @@ body.sky-immersive #photoSkyBackdrop,body.sky-immersive #skyEffectsCanvas{z-inde
 @media(prefers-reduced-motion:reduce){#photoSkyBackdrop{transition:none}.sky-live-indicator i{animation:none}}
 
 
-/* Elseverse · IF Lines bubble entrance prototype 0.1
-   CSS-only translucent orbs: abstract surface color, no miniature buildings. */
-#worldsView{position:relative}
-#worldsView:before{content:"";position:absolute;z-index:-1;inset:105px -8vw 0;pointer-events:none;background:radial-gradient(ellipse at 18% 25%,rgba(188,174,224,.17),transparent 35%),radial-gradient(ellipse at 82% 55%,rgba(137,174,210,.14),transparent 38%)}
-.world-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:clamp(18px,3vw,34px);padding:24px 0 36px}
-.world-item.world-bubble-card{position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:14px;min-height:310px;padding:12px 12px 20px;border:0;background:transparent;text-align:center;overflow:visible;color:var(--ink);transition:transform .35s ease}
-.world-bubble-card:hover,.world-bubble-card:focus-visible{transform:translateY(-7px)}
-.world-bubble-orb{position:relative;display:block;width:min(100%,218px);aspect-ratio:1;border-radius:50%;overflow:hidden;isolation:isolate;border:1px solid rgba(255,255,255,.78);background:radial-gradient(ellipse at 31% 22%,rgba(255,255,255,.95) 0 2%,rgba(255,255,255,.28) 8%,transparent 24%),radial-gradient(ellipse at 70% 76%,rgba(198,182,255,.55),transparent 42%),radial-gradient(ellipse at 36% 65%,rgba(116,185,222,.55),transparent 48%),radial-gradient(circle at 50% 50%,#3c416f 0,#262b52 46%,#111a34 74%,#090f20 100%);box-shadow:inset -18px -22px 36px rgba(3,8,25,.52),inset 12px 10px 25px rgba(255,255,255,.3),0 12px 35px rgba(24,35,73,.2),0 0 24px rgba(167,163,239,.18)}
-.world-bubble-orb:before{content:"";position:absolute;inset:-18%;border-radius:50%;background:repeating-radial-gradient(ellipse at 45% 52%,transparent 0 13px,rgba(215,221,255,.09) 14px,transparent 16px),conic-gradient(from 35deg,transparent 0 16%,rgba(255,255,255,.28) 19%,transparent 23% 57%,rgba(173,202,255,.2) 62%,transparent 68%);filter:blur(1.5px);mix-blend-mode:screen;transform:rotate(-22deg)}
-.world-bubble-orb:after{content:"";position:absolute;inset:3%;border-radius:50%;border:1px solid rgba(255,255,255,.26);box-shadow:inset 0 0 18px rgba(255,255,255,.13)}
-.bubble-gloss{position:absolute;z-index:2;left:17%;top:11%;width:34%;height:13%;border-radius:50%;background:linear-gradient(90deg,rgba(255,255,255,.78),rgba(255,255,255,.08));filter:blur(5px);transform:rotate(-34deg)}
-.bubble-filament{position:absolute;z-index:2;left:-13%;top:45%;width:126%;height:30%;border:1px solid rgba(238,239,255,.5);border-radius:50%;transform:rotate(-25deg);box-shadow:0 0 12px rgba(196,207,255,.28)}
-.bubble-spark{position:absolute;z-index:3;color:rgba(255,255,255,.85);text-shadow:0 0 12px white}.bubble-spark-a{right:23%;top:27%;font-size:22px}.bubble-spark-b{left:26%;bottom:24%;font-size:27px}
-.bubble-tone-1 .world-bubble-orb{background:radial-gradient(ellipse at 31% 22%,#fff 0 2%,#ffffff44 9%,transparent 24%),radial-gradient(ellipse at 72% 72%,#e2b9ed88,transparent 43%),radial-gradient(ellipse at 35% 65%,#82b5df99,transparent 48%),radial-gradient(circle at 50% 50%,#584878,#29294e 65%,#10172e)}
-.bubble-tone-2 .world-bubble-orb{background:radial-gradient(ellipse at 31% 22%,#fff 0 2%,#ffffff44 9%,transparent 24%),radial-gradient(ellipse at 72% 72%,#e7d3a888,transparent 43%),radial-gradient(ellipse at 35% 65%,#91c6bb99,transparent 48%),radial-gradient(circle at 50% 50%,#526b70,#293f52 65%,#101b2c)}
-.bubble-tone-3 .world-bubble-orb{background:radial-gradient(ellipse at 31% 22%,#fff 0 2%,#ffffff44 9%,transparent 24%),radial-gradient(ellipse at 72% 72%,#b4a8f788,transparent 43%),radial-gradient(ellipse at 35% 65%,#d4a8c799,transparent 48%),radial-gradient(circle at 50% 50%,#51466f,#2a294f 65%,#10172e)}
-.bubble-tone-4 .world-bubble-orb{background:radial-gradient(ellipse at 31% 22%,#fff 0 2%,#ffffff44 9%,transparent 24%),radial-gradient(ellipse at 72% 72%,#9ed5d088,transparent 43%),radial-gradient(ellipse at 35% 65%,#8eaee999,transparent 48%),radial-gradient(circle at 50% 50%,#3c6472,#263d59 65%,#101b2c)}
-.bubble-tone-5 .world-bubble-orb{background:radial-gradient(ellipse at 31% 22%,#fff 0 2%,#ffffff44 9%,transparent 24%),radial-gradient(ellipse at 72% 72%,#f0c8a888,transparent 43%),radial-gradient(ellipse at 35% 65%,#b5a8e999,transparent 48%),radial-gradient(circle at 50% 50%,#68516d,#34304f 65%,#17182d)}
-.world-bubble-copy{display:flex;flex-direction:column;align-items:center;gap:5px;max-width:230px}.world-bubble-copy>small:first-child{font-size:8px;letter-spacing:.18em;color:#8b8b9b}.world-bubble-copy strong{font:400 22px Georgia,"Noto Serif SC",serif;margin:2px 0;color:var(--ink)}.world-bubble-copy>small:nth-of-type(2){font-size:10px;color:#858493;line-height:1.5;max-width:210px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.bubble-enter{margin-top:7px;font-size:10px;letter-spacing:.08em;color:#8980a7;opacity:.85}
-@media(max-width:700px){.world-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding-top:16px}.world-item.world-bubble-card{min-height:250px;padding:8px 4px 16px;gap:10px}.world-bubble-orb{width:min(100%,158px)}.world-bubble-copy strong{font-size:18px}.world-bubble-copy>small:nth-of-type(2){font-size:9px}.bubble-enter{font-size:9px}}
-@media(max-width:390px){.world-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.world-bubble-orb{width:min(100%,140px)}.world-item.world-bubble-card{min-height:225px}}
-@media(prefers-reduced-motion:reduce){.world-bubble-card{transition:none}.world-bubble-card:hover{transform:none}}
+
+/* v0.8 — Bubble Home */
+#bubbleCanvas,#bubbleLabels{display:none}
+body.bubble-home{background:#07101d;color:#f4f1ea;overflow:hidden;height:100dvh}
+body.bubble-home #bubbleCanvas{display:block;position:fixed;inset:0;width:100vw;height:100dvh;z-index:0}
+body.bubble-home #bubbleLabels{display:block;position:fixed;inset:0;z-index:2;pointer-events:none}
+body.bubble-home .topbar{position:relative;z-index:3;border-color:#ffffff20;background:#080d1866;backdrop-filter:blur(8px)}
+body.bubble-home .topbar .brand,body.bubble-home .topbar .text-btn{color:#f4f1ea}
+body.bubble-home #homeView,body.bubble-home .footer{display:none!important}
+.bubble-label{position:absolute;left:0;top:0;border:0;background:transparent;border-radius:50%;pointer-events:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4em;padding:0 14%;color:#eaf2ff;text-align:center;cursor:pointer;will-change:transform;-webkit-tap-highlight-color:transparent}
+.bubble-label strong{font:500 1em/1.25 Georgia,'Songti SC',serif;letter-spacing:.02em;text-shadow:0 1px 10px #04122e,0 0 2px #04122e}
+.bubble-label small{font:.62em/1 sans-serif;letter-spacing:.14em;color:#b9cdf0;opacity:.85;text-shadow:0 1px 6px #04122e}
+.bubble-caption{position:absolute;left:0;right:0;bottom:max(14px,env(safe-area-inset-bottom));text-align:center;font:italic 12px Georgia,serif;color:#9fb2d6;letter-spacing:.08em;pointer-events:none}
