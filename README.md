@@ -1,40 +1,30 @@
-# Elseverse · 别境 — v0.7 Photo Sky
+# Elseverse · 别境 v0.8 — Living Nebula Glass
 
-A mobile-first, local-first personal worlds archive with a lightweight photo-based sky for Our Little Universe.
+手机优先的静态网页版本，部署到 GitHub Pages。
 
-## Included
-- Elseverse home with Dream Worlds and Original Worlds collections.
-- Preserves legacy `myself-worlds` and `myself-language` localStorage keys.
-- World create/edit/delete and category browsing.
-- Our Little Universe with six subpages: About the Voices, The Persona, Letters, Conversations, Little Moments, Shared Creation.
-- Records support title, body, relation (you / G老师 / D老师 / shared), tags, date, and visibility label.
-- IndexedDB storage under `elseverse-archive-v1`; legacy media database is not modified.
-- JSON backup and merge import.
-- Responsive mobile layout.
+## 文件
+- `index.html`
+- `styles.css`
+- `app.js`（唯一脚本引用；无外部 JS 库）
 
-## Photo Sky (v0.7)
-- Uses a small curated set of real NASA/Hubble/Webb astronomical photographs as switchable backgrounds.
-- No SkyEngine, Aladin Lite, WebGL, live sky calculations, or deep-sky observing mode.
-- Lightweight Canvas overlay draws subtle twinkling stars and occasional meteors locally in the browser.
-- Optional decorative constellation lines.
-- Background zoom slider, saved favorites, and immersive mode.
-- The background is fixed to the viewport and remains in place while archive content scrolls.
-- Scene choice, favorites, and effect preferences are stored locally in this browser.
+## 本次视觉改造
+- 首页改为玻璃星云泡泡入口：每个世界与「我们的小宇宙」均为独立泡泡。
+- 泡泡使用 WebGL fragment shader 绘制球面星云、动态流场、菲涅尔边缘与局部高光。
+- 「我们的小宇宙」页面使用 WebGL Points 粒子球；粒子在基本稳定的球面上形成缓慢变化的柔亮丝带。
+- WebGL 初始化失败时退回 Canvas 2D 简化绘制。
+- 页面隐藏时暂停动画；限制 DPR 到 1.5；支持 `prefers-reduced-motion`。
+- 使用 `visualViewport` 更新可视高度，并使用 `dvh` / `svh` 作为 CSS 后备。
 
-## Run
-Open `index.html` in a modern browser or deploy the folder to static hosting. Internet access is required to load the NASA-hosted background photographs. The curated source pages are linked in `THIRD_PARTY_NOTICES.md`. The archive remains usable if an image host is unavailable.
+## 数据兼容
+没有更改以下既有存储名称或记录格式：
+- `localStorage["myself-worlds"]`
+- `localStorage["myself-language"]`
+- IndexedDB：`elseverse-archive-v1`，object store：`records`
 
-## Data and privacy notes
-- Archive content and preferences are stored locally in the current browser/device. There is no account, server, cloud sync, or cross-device sync.
-- `public` is only a visibility label in this prototype; it does not publish anything to the internet.
-- Do not treat local browser storage as strong security for sensitive content.
-- Back up important data before replacing the deployed site. The app retains the original `myself-worlds` and `myself-language` keys and does not delete the old `myself-media-v1` image database.
-- This version keeps the existing archive IndexedDB schema and record formats.
+旧版世界详情、档案子页面、管理页和 JSON 备份导入导出代码均从 v0.7 保留。上线前仍建议先在旧站管理页导出一次 JSON 备份。
 
-## Image credits
-- NGC 604: NASA, ESA, CSA, STScI.
-- NGC 3603: NASA, ESA, R. O'Connell et al., WFC3 Science Oversight Committee, Hubble Heritage Team (STScI/AURA).
-- Hubble Deep Field: R. Williams, the Hubble Deep Field Team, STScI and NASA.
+## 部署
+将三个网页文件放在 GitHub Pages 发布目录的同一层级，然后提交并推送即可。不要把 `app.js` 改成远程 CDN 引用。
 
-## IF Lines Bubble Prototype 0.1
-World collection pages render each saved world as a CSS-only translucent orb. Orb palettes vary by card position; no extra image downloads, WebGL, or new storage fields are required. Existing world records and navigation are preserved.
+## 注意
+这是基于你提供的 v0.7 源码和泡泡原型完成的 v0.8 改造稿。此环境未能成功启动浏览器自动化访问（本地预览被运行环境拦截），因此请先在手机浏览器或 GitHub Pages 预览实际性能，再替换线上版本。
