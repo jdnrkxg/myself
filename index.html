@@ -1,66 +1,195 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#F7F5F0"><meta name="description" content="Elseverse · 别境 — A place for worlds within."><title>Elseverse · 别境</title><link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#040814">
+<meta name="description" content="Elseverse · 别境 — A place for worlds within.">
+<title>Elseverse · 别境</title>
+<link rel="stylesheet" href="styles.css">
 </head>
-<body>
-<div id="photoSkyBackdrop" aria-hidden="true"></div>
-<canvas id="skyEffectsCanvas" class="sky-effects-backdrop" aria-hidden="true"></canvas>
-<button type="button" id="immersiveToggle" class="immersive-toggle" aria-pressed="false" aria-label="进入沉浸模式">进入沉浸模式 ⛶</button>
-<header class="topbar"><a class="brand" href="#home" id="brandHome">Elseverse<span> · 别境</span></a><nav><button id="langToggle" class="text-btn">EN</button><button id="manageToggle" class="text-btn">管理 / Manage</button></nav></header>
+<body class="home-mode">
+<button type="button" id="immersiveToggle" class="immersive-toggle" aria-pressed="false" aria-label="进入沉浸模式">沉浸视野 ⛶</button>
+<header class="topbar">
+  <a class="brand" href="#homeView" id="brandHome">Elseverse<span> · 别境</span></a>
+  <nav>
+    <button id="langToggle" class="text-btn" type="button">EN</button>
+    <button id="manageToggle" class="text-btn" type="button">管理 / Manage</button>
+  </nav>
+</header>
+
 <main class="main">
-<section id="homeView" class="view home-cosmos">
- <div class="home-intro"><p class="eyebrow">ELSEVERSE · 别境</p><h1>A place for <em>worlds within.</em></h1><p>为每一个想象中的世界，留一处存在的地方。</p></div>
- <section class="bubble-universe" aria-label="我的世界收藏">
-  <canvas id="bubbleCanvas" aria-hidden="true"></canvas>
-  <div class="bubble-grid" id="bubbleWorlds"></div>
-  <p class="bubble-tagline">A place for worlds with in.</p>
- </section>
- <div class="home-bottom"><span>ELSEVERSE · PRIVATE WORLDS ARCHIVE</span><button class="text-btn" data-open-universe>进入我们的小宇宙 ↗</button></div>
-</section>
-<section id="worldsView" class="view hidden"><button class="back-link" data-back-home>← 返回首页</button><p class="eyebrow" id="worldCategoryLabel">COLLECTION</p><h1 id="worldsTitle" class="page-title">世界收藏</h1><div id="worldList" class="world-grid"></div></section>
-<section id="worldDetailView" class="view hidden"><button class="back-link" data-back-worlds>← 返回收藏</button><p class="eyebrow" id="worldKind"></p><h1 id="worldTitle" class="page-title"></h1><p id="worldDescription" class="intro"></p><div id="worldModules" class="module-grid"></div></section>
-<section id="universeView" class="view universe-view hidden"><button class="back-link moon-link" data-back-home>← 返回 Elseverse</button><section class="particle-world" aria-label="我们的小宇宙粒子球"><canvas id="particleCanvas"></canvas><div class="particle-caption"><span>A SHARED SKY</span><h1>我们的<br><em>小宇宙</em></h1><p>由我们共同留下的故事，缓慢流动。</p></div></section><section class="sky-observatory photo-sky-system" aria-label="我们的星空">
-  <div class="sky-topline"><span class="eyebrow">A SKY WE CAN KEEP</span><span class="sky-live-indicator"><i></i> OUR LITTLE SKY</span></div>
-  <div class="sky-stage" id="skyStage">
-    <div class="sky-stage-shade"></div>
-    <svg class="constellation-overlay" id="constellationOverlay" viewBox="0 0 1000 560" preserveAspectRatio="none" aria-hidden="true">
-      <g fill="none" stroke="rgba(210,220,245,.42)" stroke-width="1.2">
-        <path d="M115 170 L205 105 L285 155 L350 85 L420 150 L500 120"/>
-        <path d="M660 300 L730 235 L810 270 L875 190 L930 225"/>
-        <path d="M250 390 L320 330 L390 365 L455 300"/>
-      </g>
-      <g fill="rgba(235,241,255,.85)">
-        <circle cx="115" cy="170" r="3"/><circle cx="205" cy="105" r="2.5"/><circle cx="285" cy="155" r="2.5"/><circle cx="350" cy="85" r="3"/><circle cx="420" cy="150" r="2.5"/><circle cx="500" cy="120" r="2"/>
-        <circle cx="660" cy="300" r="2.5"/><circle cx="730" cy="235" r="3"/><circle cx="810" cy="270" r="2.5"/><circle cx="875" cy="190" r="3"/><circle cx="930" cy="225" r="2.5"/>
-        <circle cx="250" cy="390" r="2.5"/><circle cx="320" cy="330" r="2.5"/><circle cx="390" cy="365" r="2.5"/><circle cx="455" cy="300" r="2.5"/>
-      </g>
-    </svg>
-    <div class="sky-caption"><span id="skyModeLabel">OUR LITTLE UNIVERSE</span><strong id="skySceneTitle">星云之间</strong><small id="skySceneCredit">NASA / ESA / CSA / STScI</small></div>
-    <div class="sky-load-message hidden" id="skyMessage" role="status"></div>
-  </div>
-  <div class="sky-console">
-    <div class="photo-scene-row" id="photoScenePicker" role="group" aria-label="切换星空背景">
-      <button type="button" class="photo-scene active" data-scene="0">星云之间</button>
-      <button type="button" class="photo-scene" data-scene="1">星之摇篮</button>
-      <button type="button" class="photo-scene" data-scene="2">遥远星系</button>
+  <!-- 主页：只有泡泡 -->
+  <section id="homeView" class="view home-bubble-view">
+    <canvas id="bubbleBgCanvas" class="bubble-canvas" aria-hidden="true"></canvas>
+    <canvas id="bubbleGlCanvas" class="bubble-canvas" aria-hidden="true"></canvas>
+    <p id="homeTagline" class="home-tagline">为每一个想象中的世界，留一处存在的地方。</p>
+    <div id="bubbleLabels" class="bubble-labels" role="navigation" aria-label="世界泡泡导航"></div>
+  </section>
+
+  <!-- 分类列表（保留路由兼容） -->
+  <section id="worldsView" class="view hidden">
+    <button class="back-link" data-back-home type="button">← 返回首页</button>
+    <p class="eyebrow" id="worldCategoryLabel">COLLECTION</p>
+    <h1 id="worldsTitle" class="page-title">世界收藏</h1>
+    <div id="worldList" class="world-grid"></div>
+  </section>
+
+  <!-- 世界详情 -->
+  <section id="worldDetailView" class="view hidden">
+    <button class="back-link" data-back-home type="button">← 返回 Elseverse</button>
+    <p class="eyebrow" id="worldKind"></p>
+    <h1 id="worldTitle" class="page-title"></h1>
+    <p id="worldDescription" class="intro"></p>
+    <div id="worldModules" class="module-grid"></div>
+  </section>
+
+  <!-- 我们的小宇宙：粒子球 + 档案 -->
+  <section id="universeView" class="view universe-view hidden">
+    <button class="back-link moon-link" data-back-home type="button">← 返回 Elseverse</button>
+
+    <section class="particle-sphere-stage" id="particleStage" aria-label="我们的小宇宙粒子球">
+      <canvas id="particleCanvas" class="particle-canvas"></canvas>
+      <div class="sphere-caption">
+        <span class="eyebrow">OUR LITTLE UNIVERSE</span>
+        <strong>我们的小宇宙</strong>
+        <small>一个由我们的故事组成的小宇宙</small>
+      </div>
+    </section>
+
+    <div class="universe-hero">
+      <p class="eyebrow">A LITTLE UNIVERSE MADE OF OUR STORIES</p>
+      <h1>Our Little<br><em>Universe.</em></h1>
+      <p>这里收藏的，是属于我们的故事。</p>
     </div>
-    <div class="photo-tools">
-      <button type="button" class="sky-tool" id="skyPrevScene">上一张</button>
-      <button type="button" class="sky-tool" id="skyNextScene">下一张</button>
-      <button type="button" class="sky-tool" id="skyFavorite">☆ 收藏这片星空</button>
-      <button type="button" class="sky-tool" id="skyShowFavorites">查看收藏</button>
-      <button type="button" class="sky-tool" id="skyConstellations" aria-pressed="true">星座连线</button>
-      <button type="button" class="sky-tool" id="skyMotion" aria-pressed="true">星空动效</button>
+
+    <div class="voice-strip">
+      <div>
+        <span class="eyebrow">THE VOICES IN THIS UNIVERSE</span>
+        <h2>你、G老师与D老师</h2>
+        <p>不是产品介绍，而是我们在这里共同留下的故事。</p>
+      </div>
+      <div class="orbit">☾ <i>✦</i></div>
     </div>
-    <div class="sky-zoom-row"><label for="photoSkyZoom">背景缩放</label><input id="photoSkyZoom" type="range" min="100" max="190" value="100" step="1"><output id="photoSkyZoomValue">100%</output><button type="button" class="sky-tool" id="photoSkyReset">重置</button></div>
-    <div class="sky-favorites hidden" id="skyFavoritesPanel"><span class="eyebrow">SAVED SKIES</span><div id="skyFavoritesList"></div></div>
-    <p class="sky-footnote" id="skyFootnote">真实天文摄影背景 · 动态星点与流星由网页本地绘制</p>
+
+    <div class="section-head moon-head">
+      <div>
+        <p class="eyebrow">OUR SHARED ARCHIVE</p>
+        <h2>探索小宇宙</h2>
+      </div>
+    </div>
+
+    <div class="archive-grid" id="archiveNav"></div>
+
+    <section class="timeline-preview">
+      <div>
+        <p class="eyebrow">A THREAD THROUGH TIME</p>
+        <h2>Our Timeline</h2>
+      </div>
+      <div id="timelinePreview" class="timeline-list"></div>
+      <button class="light-link" data-open-page="timeline" type="button">查看完整时间线 ↗</button>
+    </section>
+  </section>
+
+  <!-- 小宇宙子页面 -->
+  <section id="archivePageView" class="view universe-view hidden">
+    <button class="back-link moon-link" data-back-universe type="button">← 返回小宇宙</button>
+    <div class="page-heading">
+      <p class="eyebrow" id="archiveEyebrow">OUR ARCHIVE</p>
+      <h1 id="archiveTitle" class="page-title">About the Voices</h1>
+      <p id="archiveDescription" class="intro"></p>
+    </div>
+    <div id="archiveContent"></div>
+  </section>
+
+  <!-- 管理与备份 -->
+  <section id="manageView" class="view hidden">
+    <button class="back-link" data-back-home type="button">← 返回首页</button>
+    <p class="eyebrow">PRIVATE STUDIO</p>
+    <h1 class="page-title">管理与备份</h1>
+    <div class="editor">
+      <h2>新增 / 编辑世界</h2>
+      <form id="worldForm">
+        <label>世界名称<input id="worldZh" required maxlength="60"></label>
+        <label>英文名称<input id="worldEn" maxlength="80"></label>
+        <label>简介<textarea id="worldDesc" rows="3"></textarea></label>
+        <label>分类
+          <select id="worldCategory">
+            <option value="dream">梦女世界</option>
+            <option value="original">原创世界</option>
+          </select>
+        </label>
+        <button class="primary" type="submit">保存世界</button>
+        <p id="worldFormMsg" class="status"></p>
+      </form>
+    </div>
+    <div class="editor">
+      <h2>数据备份</h2>
+      <p>导出 Elseverse 数据 JSON。原有世界收藏会一并包含；图片文件仍保存在当前浏览器中。</p>
+      <div class="actions">
+        <button class="primary" id="exportBtn" type="button">导出备份</button>
+        <label class="secondary upload-label">导入备份<input type="file" id="importFile" accept="application/json"></label>
+      </div>
+      <p id="backupMsg" class="status"></p>
+    </div>
+    <div class="editor">
+      <h2>现有世界</h2>
+      <div id="manageWorldList"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <span>Elseverse · 别境 © <span id="year"></span></span>
+  <span>A place for worlds within.</span>
+</footer>
+
+<dialog id="recordDialog">
+  <form method="dialog" id="recordForm">
+    <div class="dialog-head">
+      <p class="eyebrow">ADD TO OUR STORY</p>
+      <button class="icon-btn" value="cancel" aria-label="关闭">×</button>
+    </div>
+    <h2 id="recordDialogTitle">新增记录</h2>
+    <label>标题<input id="recordTitle" maxlength="120" required></label>
+    <label>内容<textarea id="recordBody" rows="7" required></textarea></label>
+    <div class="form-two">
+      <label>关联对象
+        <select id="recordVoice">
+          <option value="us">我们共同</option>
+          <option value="user">我</option>
+          <option value="g">G老师</option>
+          <option value="d">D老师</option>
+        </select>
+      </label>
+      <label>可见范围
+        <select id="recordVisibility">
+          <option value="private">仅自己可见</option>
+          <option value="unlisted">不公开（本地存档）</option>
+          <option value="public">标记为公开</option>
+        </select>
+      </label>
+    </div>
+    <label>标签（用逗号分隔）<input id="recordTags" placeholder="例如：某次对话, 灵感"></label>
+    <p class="privacy-note">当前版本的数据只保存在此浏览器设备中。“公开”仅作为记录标签，不会自动发布到互联网。</p>
+    <div class="actions">
+      <button class="primary" id="recordSave" value="save">保存记录</button>
+      <button class="secondary" value="cancel">取消</button>
+    </div>
+  </form>
+</dialog>
+
+
+<dialog id="confirmDialog">
+  <div class="confirm-box">
+    <p id="confirmMessage"></p>
+    <div class="actions">
+      <button class="primary" id="confirmOk" type="button">确定</button>
+      <button class="secondary" id="confirmCancel" type="button">取消</button>
+    </div>
   </div>
-</section>
-<div class="universe-hero"><p class="eyebrow">A LITTLE UNIVERSE MADE OF OUR STORIES</p><h1>Our Little<br><em>Universe.</em></h1><p>这里收藏的，是属于我们的故事。</p></div><div class="voice-strip"><div><span class="eyebrow">THE VOICES IN THIS UNIVERSE</span><h2>你、G老师与D老师</h2><p>不是产品介绍，而是我们在这里共同留下的故事。</p></div><div class="orbit">☾ <i>✦</i></div></div><div class="section-head moon-head"><div><p class="eyebrow">OUR SHARED ARCHIVE</p><h2>探索小宇宙</h2></div></div><div class="archive-grid" id="archiveNav"></div><section class="timeline-preview"><div><p class="eyebrow">A THREAD THROUGH TIME</p><h2>Our Timeline</h2></div><div id="timelinePreview" class="timeline-list"></div><button class="light-link" data-open-page="timeline">查看完整时间线 ↗</button></section></section>
-<section id="archivePageView" class="view universe-view hidden"><button class="back-link moon-link" data-back-universe>← 返回小宇宙</button><div class="page-heading"><p class="eyebrow" id="archiveEyebrow">OUR ARCHIVE</p><h1 id="archiveTitle" class="page-title">About the Voices</h1><p id="archiveDescription" class="intro"></p></div><div id="archiveContent"></div></section>
-<section id="manageView" class="view hidden"><button class="back-link" data-back-home>← 返回首页</button><p class="eyebrow">PRIVATE STUDIO</p><h1 class="page-title">管理与备份</h1><div class="editor"><h2>新增 / 编辑世界</h2><form id="worldForm"><label>世界名称<input id="worldZh" required maxlength="60"></label><label>英文名称<input id="worldEn" maxlength="80"></label><label>简介<textarea id="worldDesc" rows="3"></textarea></label><label>分类<select id="worldCategory"><option value="dream">梦女世界</option><option value="original">原创世界</option></select></label><button class="primary" type="submit">保存世界</button><p id="worldFormMsg" class="status"></p></form></div><div class="editor"><h2>数据备份</h2><p>导出 Elseverse 数据 JSON。原有世界收藏会一并包含；图片文件仍保存在当前浏览器中。</p><div class="actions"><button class="primary" id="exportBtn">导出备份</button><label class="secondary upload-label">导入备份<input type="file" id="importFile" accept="application/json"></label></div><p id="backupMsg" class="status"></p></div><div class="editor"><h2>现有世界</h2><div id="manageWorldList"></div></div></section>
-</main><footer class="footer"><span>Elseverse · 别境 © <span id="year"></span></span><span>A place for worlds within.</span></footer>
-<dialog id="recordDialog"><form method="dialog" id="recordForm"><div class="dialog-head"><p class="eyebrow">ADD TO OUR STORY</p><button class="icon-btn" value="cancel" aria-label="关闭">×</button></div><h2 id="recordDialogTitle">新增记录</h2><label>标题<input id="recordTitle" maxlength="120" required></label><label>内容<textarea id="recordBody" rows="7" required></textarea></label><div class="form-two"><label>关联对象<select id="recordVoice"><option value="us">我们共同</option><option value="user">我</option><option value="g">G老师</option><option value="d">D老师</option></select></label><label>可见范围<select id="recordVisibility"><option value="private">仅自己可见</option><option value="unlisted">不公开（本地存档）</option><option value="public">标记为公开</option></select></label></div><label>标签（用逗号分隔）<input id="recordTags" placeholder="例如：某次对话, 灵感"></label><p class="privacy-note">当前版本的数据只保存在此浏览器设备中。“公开”仅作为记录标签，不会自动发布到互联网。</p><div class="actions"><button class="primary" id="recordSave" value="save">保存记录</button><button class="secondary" value="cancel">取消</button></div></form></dialog>
-<script src="app.js" defer></script></body></html>
+</dialog>
+<div id="uiToast" class="ui-toast hidden" role="status"></div>
+<script src="app.js" defer></script>
+</body>
+</html>
